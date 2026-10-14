@@ -12,6 +12,7 @@ function app(options={}){
  return new JSDOM(source,{runScripts:"dangerously",url:"https://example.test/",pretendToBeVisual:true,virtualConsole:quiet,beforeParse(window){
   if(options.data){const id="test-tree";window.localStorage.setItem("rodoslov:registry",JSON.stringify([{id,name:options.data.title,created:1,updated:1,count:options.data.persons.length}]));window.localStorage.setItem("rodoslov:active",id);window.localStorage.setItem("rodoslov:tree:"+id,JSON.stringify(options.data))}
   if(options.net){window.localStorage.setItem("rodoslov:netlify:url","https://trees.test");window.sessionStorage.setItem("rodoslov:netlify:admin","test-key");window.fetch=options.net}
+  if(options.share){window.navigator.share=options.share;window.navigator.canShare=()=>true}
  }});
 }
 
@@ -84,6 +85,31 @@ function app(options={}){
 }
 
 {
+ const data={title:"Nove kontrole",version:3,persons:Array.from({length:16},(_,i)=>({id:i+1,name:"G"+(i+1),...(i<15?{parents:[i+2]}:{})})),unions:[]},dom=app({data}),d=dom.window.document;
+ d.querySelector('#wrap [data-id="1"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));
+ const hourglass=d.querySelector('[name="view-kind"][value="hourglass"]');hourglass.click();
+ assert.equal(d.querySelector("#vw").value,"hourglass","vizuelni izbor prikaza ažurira postojeće stanje");
+ assert.equal(d.querySelector("#wrap svg").dataset.view,"hourglass");
+ assert.equal(d.querySelector("#view-scope").hidden,true,"obim se ne prikazuje kada nije standardni dijagram");
+ d.querySelector('[data-gen="gb"][data-step="-1"]').click();
+ assert.equal(d.querySelector("#gb").options.length,17,"izbor obuhvata svih 15 stvarnih generacija i opciju Sve");
+ assert.equal(d.querySelector("#gb").value,"14","minus iz režima Sve polazi od stvarne dubine stabla");
+ assert.equal(d.querySelector('[data-gen-value="gb"]').value,"14");
+ const years=d.querySelector('[data-toggle="yr"]');years.click();assert.equal(d.querySelector("#yr").value,"0","prekidač ažurira postojeću opciju");
+ const standard=d.querySelector('[name="view-kind"][value="standard"]');standard.click();d.querySelector('[name="view-scope"][value="ped"]').click();
+ assert.equal(d.querySelector("#vw").value,"ped","obim standardnog prikaza koristi isti renderer");
+ dom.window.close();
+}
+
+{
+ const data={title:"Meni",version:3,persons:[{id:1,name:"Root"}],unions:[]},dom=app({data}),d=dom.window.document;
+ d.querySelector('#wrap [data-id="1"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));const button=d.querySelector("#madd");button.click();
+ assert.equal(button.getAttribute("aria-expanded"),"true");assert.equal(d.querySelector("#pop").getAttribute("role"),"menu");assert.equal(d.activeElement.getAttribute("role"),"menuitem","prva stavka dobija fokus");
+ d.activeElement.dispatchEvent(new dom.window.KeyboardEvent("keydown",{key:"Escape",bubbles:true}));assert.equal(d.querySelector("#pop"),null);assert.equal(button.getAttribute("aria-expanded"),"false");assert.equal(d.activeElement,button,"Escape vraća fokus na dugme");
+ assert.ok(d.querySelector("#morder svg use"),"akcija redosleda ima internu ikonicu");dom.window.close();
+}
+
+{
  const dom=app({data:{title:"Dodir",version:3,persons:[{id:1,name:"Root"}],unions:[]}}),d=dom.window.document,w=d.querySelector("#wrap"),svg=()=>d.querySelector("#wrap svg"),pointer=(type,id,x,y)=>{const e=new dom.window.Event(type,{bubbles:true,cancelable:true});Object.defineProperties(e,{pointerId:{value:id},pointerType:{value:"touch"},button:{value:0},clientX:{value:x},clientY:{value:y}});w.dispatchEvent(e)};
  const before=+svg().getAttribute("width");pointer("pointerdown",1,100,100);pointer("pointerdown",2,200,100);pointer("pointermove",2,300,100);
  assert.ok(+svg().getAttribute("width")>before*1.8,"pinch razmicanje uvećava prikaz");pointer("pointerup",2,300,100);pointer("pointerup",1,100,100);dom.window.close();
@@ -107,7 +133,11 @@ function app(options={}){
 }
 
 {
- const data={title:"Partneri",version:3,persons:[{id:1,name:"Main"},{id:2,name:"First"},{id:3,name:"Second"}],unions:[[1,2],[1,3]]},dom=app({data}),d=dom.window.document;d.querySelector('#wrap [data-id="1"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));d.querySelector("#mmore").click();[...d.querySelectorAll("#pop button")].find(b=>/Redosled partnera/.test(b.textContent)).click();d.querySelector('[data-porder="2"][data-dir="1"]').click();const saved=JSON.parse(dom.window.localStorage.getItem("rodoslov:tree:test-tree"));assert.deepEqual(saved.unions,[[1,3],[1,2]],"ručni redosled partnera opstaje");dom.window.close();
+ const data={title:"Partneri",version:3,persons:[{id:1,name:"Main"},{id:2,name:"First"},{id:3,name:"Second"}],unions:[[1,2],[1,3]]},dom=app({data}),d=dom.window.document;d.querySelector('#wrap [data-id="1"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));d.querySelector("#morder").click();d.querySelector('[data-porder="2"][data-dir="1"]').click();const saved=JSON.parse(dom.window.localStorage.getItem("rodoslov:tree:test-tree"));assert.deepEqual(saved.unions,[[1,3],[1,2]],"ručni redosled partnera opstaje");dom.window.close();
+}
+
+{
+ const data={title:"Braća",version:3,persons:[{id:1,name:"Parent"},{id:2,name:"First",parents:[1]},{id:3,name:"Second",parents:[1]}],unions:[]},dom=app({data}),d=dom.window.document;d.querySelector('#wrap [data-id="2"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));d.querySelector("#morder").click();d.querySelector('[data-sorder="2"][data-dir="1"]').click();const saved=JSON.parse(dom.window.localStorage.getItem("rodoslov:tree:test-tree"));assert.deepEqual(saved.persons.map(p=>p.id),[1,3,2],"zajednički dijalog čuva ručni redosled braće i sestara");dom.window.close();
 }
 
 {
@@ -115,7 +145,7 @@ function app(options={}){
 }
 
 {
- const data={title:"Privatnost",version:3,persons:[{id:1,name:"Living",born:"2000",place:"Town",note:"Private"}],unions:[]},dom=app({data}),d=dom.window.document;d.querySelector("#dshare").click();assert.match(d.querySelector("#sprev").textContent,/Pregled privatnosti/);assert.match(d.querySelector("#sprev").textContent,/1 verovatno živih/);assert.match(d.querySelector("#sprev").textContent,/biće sakrivene/);d.querySelector("#s5").checked=false;d.querySelector("#s5").dispatchEvent(new dom.window.Event("change",{bubbles:true}));assert.match(d.querySelector("#sprev").textContent,/neće biti sakriveni/);dom.window.close();
+ const data={title:"Privatnost",version:3,persons:[{id:1,name:"Living",born:"2000",place:"Town",note:"Private"}],unions:[]},dom=app({data}),d=dom.window.document;assert.equal(d.querySelectorAll(".drawer-section").length,2,"fajl i štampa su kompaktne grupe");d.querySelector("#dshare").click();assert.equal(d.querySelector("#s3").value,"netlify","Netlify link je prva opcija deljenja");assert.match(d.querySelector("#sprev").textContent,/Pregled privatnosti/);assert.match(d.querySelector("#sprev").textContent,/1 verovatno živih/);assert.match(d.querySelector("#sprev").textContent,/biće sakrivene/);d.querySelector("#s5").checked=false;d.querySelector("#s5").dispatchEvent(new dom.window.Event("change",{bubbles:true}));assert.match(d.querySelector("#sprev").textContent,/neće biti sakriveni/);dom.window.close();
 }
 
 (async()=>{
@@ -123,8 +153,9 @@ function app(options={}){
  const legacy=addLegacyCopyAction("<!doctype html><body><main>Staro stablo</main></body>","abcdefghijklmnopqrstuvwx");
  assert.match(legacy,/sharecopybtn-legacy/);assert.match(legacy,/dataset\.shared="readonly"/);
  const calls=[],token="abcdefghijklmnopqrstuvwx",fetch=async(url,options={})=>{calls.push({url,options});return{ok:true,status:200,json:async()=>options.method==="PATCH"?{token,expires:Date.now()+90*86400000}:{items:[{token,title:"Test objava",created:Date.now()-1000,expires:Date.now()+30*86400000,size:1234}],totalSize:1234,removedExpired:0}}};
- const dom=app({data:{title:"Mreža",version:3,persons:[{id:1,name:"Osoba"}],unions:[]},net:fetch}),d=dom.window.document;d.querySelector("#dnet").click();await new Promise(r=>setTimeout(r,0));
+ let shared=null;const dom=app({data:{title:"Mreža",version:3,persons:[{id:1,name:"Osoba"}],unions:[]},net:fetch,share:async data=>{shared=data}}),d=dom.window.document;d.querySelector("#dnet").click();await new Promise(r=>setTimeout(r,0));
  assert.equal(d.querySelector("#mt").textContent,"Netlify objave");assert.ok(d.querySelector("[data-netextend]"));assert.ok(d.querySelector("[data-netdel]"));assert.match(d.querySelector(".net-summary").textContent,/1.*aktivnih linkova/);
+ d.querySelector("[data-netshare]").click();await new Promise(r=>setTimeout(r,0));assert.equal(shared.url,"https://trees.test/s/"+token,"sistemsko deljenje dobija Netlify link");
  d.querySelector("[data-netqr]").click();assert.match(d.querySelector(".net-qr img").src,/qr-code\?token=abcdefghijklmnopqrstuvwx/);
  d.querySelector("#dnet").click();await new Promise(r=>setTimeout(r,0));d.querySelector("[data-netextend]").click();d.querySelector("#mok").click();await new Promise(r=>setTimeout(r,10));assert.ok(calls.some(x=>x.options.method==="PATCH"),"produženje koristi PATCH");dom.window.close();
  console.log("ui: svi testovi su prošli");

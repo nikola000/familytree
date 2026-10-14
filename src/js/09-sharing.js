@@ -18,10 +18,10 @@ function buildShare(S,ttl,noNotes,protectLiving,fmt){const data=subsetJ(S,ttl,no
  return{text:html,count:data.persons.length,mime:"text/html",ext:"html"}}
 function sharePrivacy(S,noNotes,protectLiving){const people=[...S].map(by).filter(Boolean),living=people.filter(likelyLiving),withNotes=people.filter(p=>p.nt),hidden=protectLiving?living.filter(p=>p.by||p.dy||p.pl||p.nt):[];
  return `<div class="share-privacy"><b>Pregled privatnosti</b><div>${people.length} osoba · ${living.length} verovatno živih · ${withNotes.length} sa napomenom</div><div>${noNotes?"Sve napomene biće izostavljene.":protectLiving?"Napomene živih osoba biće izostavljene.":"Napomene će biti uključene."}</div><div>${protectLiving?`Za ${hidden.length} živih osoba biće sakrivene godine, mesta i napomene.`:"Godine i mesta živih osoba neće biti sakriveni."}</div>${living.length?`<details><summary>Verovatno žive osobe (${living.length})</summary><ul>${living.map(p=>`<li>${esc(nm(p)+" "+effS(p))}${p.by?" · "+esc(p.by):""}</li>`).join("")}</ul></details>`:""}</div>`}
-function shareDialog(){const r=viewSvg(null),ids=new Set(r.ids),sel_=tsel.size?new Set(tsel):null,fp=focus!=null?by(focus):null,dflt=fp&&$("vw").value!=="all"?"Породично стабло: "+nm(fp):title;
+function shareDialog(defaultFmt="netlify"){const r=viewSvg(null),ids=new Set(r.ids),sel_=tsel.size?new Set(tsel):null,fp=focus!=null?by(focus):null,dflt=fp&&$("vw").value!=="all"?"Породично стабло: "+nm(fp):title;
  openModal("Napravi stablo za deljenje",`<label>Naziv novog stabla<input id="s1" type="text" value="${escA(dflt)}"></label>
 <label>Šta uključiti<select id="s2"><option value="view">Ono što je sada na slici (${ids.size} osoba)</option>${sel_?`<option value="sel">Označene u tabeli (${sel_.size} osoba)</option>`:""}</select></label>
-<label>Odredište<select id="s3"><option value="html">Samostalna stranica (HTML) – otvara se dvoklikom</option><option value="json">JSON – za uvoz ili rezervnu kopiju</option>${EMB?"":'<option value="local">Novo lokalno stablo u biblioteci</option><option value="netlify">Netlify link</option>'}</select></label>
+<label>Odredište<select id="s3">${EMB?"":'<option value="netlify">Netlify link – preporučeno za telefon</option>'}<option value="html">Samostalna stranica (HTML) – otvara se dvoklikom</option><option value="json">JSON – za uvoz ili rezervnu kopiju</option>${EMB?"":'<option value="local">Novo lokalno stablo u biblioteci</option>'}</select></label>
 <label style="flex-direction:row;gap:8px;align-items:center"><input id="s4" type="checkbox" checked> Izostavi napomene</label>
 <label style="flex-direction:row;gap:8px;align-items:center"><input id="s5" type="checkbox" checked> Sakrij godine, mesta i napomene verovatno živih osoba</label>
 <div id="sprev"></div>
@@ -30,6 +30,7 @@ function shareDialog(){const r=viewSvg(null),ids=new Set(r.ids),sel_=tsel.size?n
   if(fmt==="local"){const data=subsetJ(S,ttl,$("s4").checked,$("s5").checked);createLocalTree(data,ttl);return}
   if(fmt==="netlify"){const res=buildShare(S,ttl,$("s4").checked,$("s5").checked,"html");publishTreeOnline(res.text,ttl);return}
   const res=buildShare(S,ttl,$("s4").checked,$("s5").checked,fmt);saveFile("rodoslov-"+slug(ttl)+"."+res.ext,new Blob([res.text],{type:res.mime}));msg("Napravljeno stablo sa "+res.count+" osoba")},"Napravi i sačuvaj");
+ if([...$("s3").options].some(o=>o.value===defaultFmt))$("s3").value=defaultFmt;
  const preview=()=>{const S=$("s2").value==="sel"&&sel_?sel_:ids;$("sprev").innerHTML=sharePrivacy(S,$("s4").checked,$("s5").checked)};
  for(const id of["s2","s4","s5"])$(id).onchange=preview;preview()
 }

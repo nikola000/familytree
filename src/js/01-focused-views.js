@@ -18,7 +18,7 @@ function focusCard(p,x,y,K,selected,kind="person"){
 function emptyFocusSvg(label){return{w:560,h:220,shown:0,gen:{},ids:[],s:`<svg xmlns="http://www.w3.org/2000/svg" width="560" height="220" viewBox="0 0 560 220"><rect width="560" height="220" fill="${focusTheme().bg}"/><text x="280" y="96" text-anchor="middle" font-family="system-ui,sans-serif" font-size="20" font-weight="600" fill="${focusTheme().head}">${label}</text><text x="280" y="126" text-anchor="middle" font-family="system-ui,sans-serif" font-size="13" fill="${focusTheme().cap}">Izaberi osobu u stablu ili pretragom, pa ponovo otvori ovaj prikaz.</text></svg>`}}
 function hourglassSvg(selected,th){
  const P=focus!=null?by(focus):null;if(!P)return emptyFocusSvg("Za peščani sat je potrebna izabrana osoba");
- const back=focusDepth("gb",4,8),forward=focusDepth("gf",4,8),F=focusedFamily(P.id,back,forward),K=focusTheme(th),levels=[...F.anc].reverse().concat([[P]],F.desc),gapY=118,pad=90;
+ const back=focusDepth("gb",4,ps.length),forward=focusDepth("gf",4,ps.length),F=focusedFamily(P.id,back,forward),K=focusTheme(th),levels=[...F.anc].reverse().concat([[P]],F.desc),gapY=118,pad=90;
  const partnersShown=new Set(),rows=levels.map(row=>{const items=[];for(const p of row){items.push({p,partner:false});for(const id of partners(p.id)){const q=by(id);if(q&&!F.ids.has(id)&&!partnersShown.has(id)){partnersShown.add(id);items.push({p:q,partner:true,of:p.id})}}}return items});
  const maxN=Math.max(1,...rows.map(r=>r.length)),w=Math.max(620,pad*2+maxN*178),h=Math.max(300,pad*2+(levels.length-1)*gapY),pos=new Map(),partnerOf=new Map();
  rows.forEach((row,ri)=>row.forEach((it,i)=>{const y=pad+ri*gapY,x=w/2+(i-(row.length-1)/2)*178;pos.set(it.p.id,{x,y});if(it.partner)partnerOf.set(it.p.id,it.of)}));

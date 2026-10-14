@@ -13,6 +13,7 @@ Samostalna web aplikacija za pravljenje, proveru, čuvanje i kontrolisano deljen
 - `src/js/01-core.js` — stanje stabla, indeksi, generacije i SVG raspored.
 - `src/js/01-tree-library.js` — više lokalnih stabala i uvoz podeljene kopije.
 - `src/js/02-storage.js` — lokalne verzije, statistika, tabela i render ciklus.
+- `src/js/03-ui-controls.js` — pristupačne vizuelne kontrole koje sinhronizuju postojeće opcije prikaza.
 - `src/js/03-shell-ui.js` do `11-io-bootstrap.js` — UI, akcije, veze, deljenje, srodstvo, štampa i pokretanje.
 - `netlify/functions/` — objava, čitanje i upravljanje deljenim stablima preko Netlify Blobs.
 - `tools/build.mjs` — spaja module u `dist/index.html` i `dist/RSv9-dev.html`.
@@ -32,6 +33,7 @@ Kod je modularan po fajlovima, ali browser moduli namerno dele globalno stanje. 
 - Dijalog deljenja pre objave prikazuje pregled verovatno živih osoba i tačno opisuje koje godine, mesta i napomene će biti izostavljene.
 - Ručno spajanje duplikata čuva jedinstvene podatke i veze, nudi izbor konfliktnih polja, pravi prethodnu verziju i blokira rizična spajanja predaka, partnera ili više od dva roditelja.
 - Netlify objave zahtevaju `RODOSLOV_ADMIN_KEY`, ograničene su na 2 MB i najviše 365 dana. Upravljački pregled prikazuje prostor i rokove, omogućava otvaranje, kopiranje, QR kod, produženje i povlačenje linka; istekli zapisi se čiste pri otvaranju pregleda.
+- Opcije prikaza koriste prekidače za binarne vrednosti, segmentirane izbore za male skupove i steper čiji maksimum prati stvarnu dubinu predaka i potomaka. Panel izabrane osobe razdvaja glavne i pomoćne akcije, a zajednički dijalog upravlja redosledom braće/sestara i partnera. Fajl i štampa su sklopljene grupe; deljenje prvo nudi Netlify link, pa sistemski Share panel podržanog uređaja. Odluke i naredne UI ideje vode se u `docs/UI_DESIGN.md`.
 - Važeći produkcioni sajt: `https://porodicnostablo.netlify.app/`.
 
 ## Provera

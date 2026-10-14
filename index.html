@@ -5,6 +5,17 @@
 <!-- DEV:STYLE -->
 <link rel="stylesheet" href="src/styles/app.css">
 <!-- /DEV:STYLE --></head><body>
+<svg class="icon-sprite" aria-hidden="true"><defs>
+<symbol id="i-add" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3.5 19c.5-4 2.4-6 5.5-6s5 2 5.5 6M18 7v6M15 10h6"/></symbol>
+<symbol id="i-edit" viewBox="0 0 24 24"><path d="m4 20 4.5-1 10-10a2 2 0 0 0-3-3l-10 10L4 20ZM13.5 8.5l3 3"/></symbol>
+<symbol id="i-focus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="7"/><circle cx="12" cy="12" r="2"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></symbol>
+<symbol id="i-link" viewBox="0 0 24 24"><path d="M9.5 14.5 14.5 9M7 16H6a4 4 0 0 1 0-8h4M17 8h1a4 4 0 0 1 0 8h-4"/></symbol>
+<symbol id="i-order" viewBox="0 0 24 24"><path d="M8 4v16M5 7l3-3 3 3M16 20V4M13 17l3 3 3-3"/></symbol>
+<symbol id="i-path" viewBox="0 0 24 24"><circle cx="5" cy="6" r="2"/><circle cx="19" cy="18" r="2"/><path d="M7 6h4a3 3 0 0 1 3 3v6a3 3 0 0 0 3 3"/></symbol>
+<symbol id="i-nav" viewBox="0 0 24 24"><path d="m4 12 16-8-6 16-3-7-7-1Z"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1"/><circle cx="12" cy="12" r="1"/><circle cx="19" cy="12" r="1"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.3 10.9 7.4-4.6M8.3 13.1l7.4 4.6"/></symbol>
+</defs></svg>
 <div id="onboarding" hidden role="dialog" aria-modal="true" aria-labelledby="onboard-title">
 <div class="onboard-card">
 <div class="onboard-brand">Rodoslov</div>
@@ -39,27 +50,28 @@
 <div id="tbl" hidden><div id="tbar"><input id="tq" type="text" placeholder="Pretraga u tabeli…"><span id="tcnt"></span></div><div id="bulk" hidden><b id="bn" style="font-weight:500"></b><span style="flex:1"></span><button id="bpol" data-m>Pol ▾</button><button id="bsn">Prezime…</button><button id="binf">Podaci…</button><button id="bdel">Obriši</button><button id="bclr">Poništi izbor</button></div>
 <div id="tscroll"><table id="tt"></table></div></div>
 <div id="panel" hidden>
-<div class="row"><input id="nm" type="text" placeholder="Ime"><input id="sn" type="text" placeholder="Prezime">
-<select id="sx" aria-label="Pol"><option value="">Pol: ?</option><option value="m">Muški</option><option value="f">Ženski</option></select><button id="pclose" aria-label="Zatvori">✕</button></div>
-<div class="row"><button id="madd" data-m>Dodaj ▾</button><button id="mlink" data-m>Veze ▾</button><button id="mnav" data-m>Idi na ▾</button><button id="mdet">Podaci</button><button id="mkin">Srodstvo</button><button id="foc" class="p">Stablo osobe</button><button id="mmore" data-m>Više ▾</button></div>
+<div class="person-head"><div class="person-avatar" aria-hidden="true">●</div><div class="person-fields"><input id="nm" type="text" placeholder="Ime" aria-label="Ime"><input id="sn" type="text" placeholder="Prezime" aria-label="Prezime"></div>
+<select id="sx" aria-label="Pol"><option value="">Pol: ?</option><option value="m">Muški</option><option value="f">Ženski</option></select><button id="pclose" class="icon-only" aria-label="Zatvori panel osobe">✕</button></div>
+<div class="person-actions primary"><button id="madd" data-m aria-haspopup="menu" aria-expanded="false"><svg class="ico"><use href="#i-add"/></svg>Dodaj <span aria-hidden="true">▾</span></button><button id="mdet"><svg class="ico"><use href="#i-edit"/></svg>Podaci</button><button id="foc" class="p"><svg class="ico"><use href="#i-focus"/></svg>Fokus</button></div>
+<div class="person-actions secondary"><button id="mlink" data-m aria-haspopup="menu" aria-expanded="false"><svg class="ico"><use href="#i-link"/></svg>Veze <span aria-hidden="true">▾</span></button><button id="morder"><svg class="ico"><use href="#i-order"/></svg>Redosled</button><button id="mkin"><svg class="ico"><use href="#i-path"/></svg>Srodstvo</button><button id="mnav" data-m aria-haspopup="menu" aria-expanded="false"><svg class="ico"><use href="#i-nav"/></svg>Idi na <span aria-hidden="true">▾</span></button><button id="mmore" data-m aria-haspopup="menu" aria-expanded="false"><svg class="ico"><use href="#i-more"/></svg>Više <span aria-hidden="true">▾</span></button></div>
 </div>
 <div id="scrim" hidden></div>
 <aside id="drawer" hidden>
 <button id="dclose" style="align-self:flex-end">✕ Zatvori</button>
 <h3>Prikaz</h3>
-<select id="vw"><option value="all">Prikaz: sve grane</option><option value="hourglass">Prikaz: peščani sat</option><option value="fan">Prikaz: lepeza predaka</option><option value="fam">Prikaz: porodica izabrane osobe</option><option value="desc">Prikaz: potomci izabrane</option><option value="ped">Prikaz: preci izabrane</option></select>
-<select id="gb"></select><select id="gf"></select>
-<select id="gr"><option value="1">Brojanje generacija: od prikaza (I = najstariji na slici)</option><option value="0">Brojanje generacija: od rodonačelnika</option></select>
-<select id="pn"><option value="0">Ime oca uz ime: ne</option><option value="1">Ime oca uz ime: da (Никола Бајов)</option></select>
-<select id="sm"><option value="all">Prezimena: sva</option><option value="diff">Prezimena: kad se razlikuju</option><option value="none">Prezimena: sakrij</option></select>
-<select id="yr"><option value="1">Godine na kartici: prikaži</option><option value="0">Godine na kartici: sakrij</option></select>
-<select id="th"><option value="light">Tema: Svetla</option><option value="cards">Tema: Karte za igru</option><option value="print">Tema: Za štampu (crno-belo)</option></select>
-<h3>Fajl</h3>
-<button id="dimp">Uvezi JSON</button><button id="dj">Izvezi JSON (rezervna kopija)</button><button id="di">Izvezi sliku (PNG)</button><button id="dc">Izvezi tabelu (CSV)</button>
-<h3>Štampa i provera</h3>
-<button id="dprint">Štampaj…</button><button id="dps">Izvezi SVG za štampu</button><button id="dpp">Izvezi PNG za štampu (4x)</button><button id="dchk">Provera grešaka…</button>
+<select id="vw" class="native-control" aria-hidden="true" tabindex="-1"><option value="all">Sve grane</option><option value="hourglass">Peščani sat</option><option value="fan">Lepeza predaka</option><option value="fam">Porodica osobe</option><option value="desc">Potomci</option><option value="ped">Preci</option></select>
+<fieldset class="control-group"><legend>Vrsta dijagrama</legend><div class="segments three"><label><input type="radio" name="view-kind" value="standard"><span>Standardno</span></label><label><input type="radio" name="view-kind" value="hourglass"><span>Peščani sat</span></label><label><input type="radio" name="view-kind" value="fan"><span>Lepeza</span></label></div></fieldset>
+<fieldset id="view-scope" class="control-group"><legend>Obim standardnog prikaza</legend><div class="choice-list"><label><input type="radio" name="view-scope" value="all"><span>Sve grane</span></label><label><input type="radio" name="view-scope" value="fam"><span>Porodica osobe</span></label><label><input type="radio" name="view-scope" value="desc"><span>Potomci osobe</span></label><label><input type="radio" name="view-scope" value="ped"><span>Preci osobe</span></label></div></fieldset>
+<select id="gb" class="native-control" aria-hidden="true" tabindex="-1"></select><select id="gf" class="native-control" aria-hidden="true" tabindex="-1"></select>
+<div class="generation-controls"><div data-gen-row="gb"><span>Preci</span><button type="button" data-gen="gb" data-step="-1" aria-label="Jedna generacija predaka manje">−</button><output data-gen-value="gb"></output><button type="button" data-gen="gb" data-step="1" aria-label="Jedna generacija predaka više">+</button><button type="button" data-gen-all="gb">Sve</button></div><div data-gen-row="gf"><span>Potomci</span><button type="button" data-gen="gf" data-step="-1" aria-label="Jedna generacija potomaka manje">−</button><output data-gen-value="gf"></output><button type="button" data-gen="gf" data-step="1" aria-label="Jedna generacija potomaka više">+</button><button type="button" data-gen-all="gf">Sve</button></div></div>
+<div class="switch-list"><label><span>Godine na kartici</span><input type="checkbox" data-toggle="yr" data-on="1" data-off="0"><i aria-hidden="true"></i></label><label><span>Ime oca uz ime</span><input type="checkbox" data-toggle="pn" data-on="1" data-off="0"><i aria-hidden="true"></i></label></div>
+<select id="yr" class="native-control" aria-hidden="true" tabindex="-1"><option value="1">Prikaži</option><option value="0">Sakrij</option></select><select id="pn" class="native-control" aria-hidden="true" tabindex="-1"><option value="0">Ne</option><option value="1">Da</option></select>
+<details class="advanced"><summary>Napredno</summary><select id="gr" class="native-control" aria-hidden="true" tabindex="-1"><option value="1">Od prikaza</option><option value="0">Od rodonačelnika</option></select><fieldset class="control-group"><legend>Brojanje generacija</legend><div class="segments"><label><input type="radio" name="gr-ui" value="1" data-sync="gr"><span>Od prikaza</span></label><label><input type="radio" name="gr-ui" value="0" data-sync="gr"><span>Od rodonačelnika</span></label></div></fieldset><select id="sm" class="native-control" aria-hidden="true" tabindex="-1"><option value="all">Sva</option><option value="diff">Različita</option><option value="none">Sakrij</option></select><fieldset class="control-group"><legend>Prezimena</legend><div class="segments three"><label><input type="radio" name="sm-ui" value="all" data-sync="sm"><span>Sva</span></label><label><input type="radio" name="sm-ui" value="diff" data-sync="sm"><span>Različita</span></label><label><input type="radio" name="sm-ui" value="none" data-sync="sm"><span>Bez</span></label></div></fieldset></details>
+<select id="th" class="native-control" aria-hidden="true" tabindex="-1"><option value="light">Svetla</option><option value="cards">Karte</option><option value="print">Štampa</option></select><fieldset class="control-group"><legend>Tema</legend><div class="theme-choices"><label><input type="radio" name="th-ui" value="light" data-sync="th"><span>☀ Svetla</span></label><label><input type="radio" name="th-ui" value="cards" data-sync="th"><span>♠ Karte</span></label><label><input type="radio" name="th-ui" value="print" data-sync="th"><span>▤ Štampa</span></label></div></fieldset>
 <h3>Deljenje</h3>
-<button id="dshare">Napravi stablo za deljenje…</button><button id="dnet">Netlify objave…</button><p>Iz trenutnog prikaza ili označenih osoba pravi se novo, manje stablo (samostalna stranica, JSON, lokalno stablo ili Netlify link).</p>
+<button id="dshare" class="drawer-primary"><svg class="ico"><use href="#i-share"/></svg>Podeli stablo…</button><button id="dnet">Upravljaj Netlify objavama…</button><p>Prva opcija pravi vremenski ograničen Netlify link koji zatim možeš poslati kroz aplikacije na telefonu.</p>
+<details class="drawer-section"><summary>Fajl i izvoz</summary><div class="drawer-actions"><button id="dimp">Uvezi JSON</button><button id="dj">Izvezi JSON (rezervna kopija)</button><button id="di">Izvezi sliku (PNG)</button><button id="dc">Izvezi tabelu (CSV)</button></div></details>
+<details class="drawer-section"><summary>Štampa i provera</summary><div class="drawer-actions"><button id="dprint">Štampaj…</button><button id="dps">Izvezi SVG za štampu</button><button id="dpp">Izvezi PNG za štampu (4x)</button><button id="dchk">Provera grešaka…</button></div></details>
 <h3>Stabla i rezervne kopije</h3><button id="dvers">Stabla i prostor…</button><p id="bkinfo"></p>
 <h3>Legenda</h3><p>„↑" na kartici: potomci su prikazani na drugom mestu. „+N": skupljeni potomci. Boje veza: svaki brak ima svoju boju. Tekst posle „|" u imenu piše ispod kartice (npr. Ime|napomena…). Ctrl + točkić: zoom.</p>
 </aside>
@@ -72,6 +84,7 @@
 <script src="src/js/01-tree-library.js"></script>
 <script src="src/js/02-storage.js"></script>
 <script src="src/js/03-shell-ui.js"></script>
+<script src="src/js/03-ui-controls.js"></script>
 <script src="src/js/04-people-actions.js"></script>
 <script src="src/js/05-input-search.js"></script>
 <script src="src/js/06-table.js"></script>

@@ -55,7 +55,7 @@ function render(){
  applyTab();let shown=null,gen=null;
  if(tab==="tree"){const r=viewSvg(sel);$("wrap").innerHTML=r.s.replace(/width="\d+" height="\d+"( viewBox)/,`width="${r.w*zoom}" height="${r.h*zoom}"$1`);shown=r.shown||0;gen=r.gen;renderPanel()}
  else renderTable();
- renderStats(shown,gen);$("undo").disabled=!stack.length;$("redo").disabled=!redo.length;if(typeof updateNavigation==="function")updateNavigation();renderVbar();lastVw=$("vw").value}
+ renderStats(shown,gen);$("undo").disabled=!stack.length;$("redo").disabled=!redo.length;if(typeof updateNavigation==="function")updateNavigation();renderVbar();if(typeof syncControlUI==="function")syncControlUI();lastVw=$("vw").value}
 let lastVw="all",vstack=[];
 const VN={hourglass:"peščani sat osobe",fan:"lepeza predaka osobe",fam:"porodica osobe",desc:"potomci osobe",ped:"preci osobe"};
 function renderVbar(){const fp=focus!=null?by(focus):null,vw=$("vw").value,on=tab==="tree"&&fp&&vw!=="all";
@@ -68,5 +68,5 @@ $("vall").onclick=()=>{vstack.push({vw:$("vw").value,focus});$("vw").value="all"
 $("hlclr").onclick=()=>{hlSet=new Set();render()};
 function change(fn){if(READ_ONLY){msg("Podeljeno stablo je samo za pregled — sačuvaj kopiju da bi ga menjao/la");return}push();fn();invalidateIndex();save();render()}
 function msg(t){$("msg").textContent=t;updInfo();setTimeout(()=>{if($("msg").textContent===t){$("msg").textContent="";updInfo()}},3500)}
-for(const[id,lab]of[["gb","Unazad"],["gf","Unapred"]])$(id).innerHTML=`<option value="99">${lab}: sve gen.</option>`+Array.from({length:13},(_,i)=>`<option value="${i}">${lab}: ${i} gen.</option>`).join("");
+for(const id of["gb","gf"])$(id).innerHTML='<option value="99">Sve generacije</option>';
 
