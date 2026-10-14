@@ -79,6 +79,8 @@ function svg(selId,thOv){
  const K=TH[thOv||$("th").value]||TH.light,yrOn=$("yr").value!=="0",pnOn=$("pn").value==="1",g=gens(),mode=$("sm").value,P=focus!=null?by(focus):null,vw=P?$("vw").value:"all",bk=+$("gb").value,fw=+$("gf").value,minG=P&&(vw==="fam"||vw==="ped")?g[P.id]-bk:-1e9,maxG=P&&(vw==="fam"||vw==="desc")?g[P.id]+fw:1e9;
  let cnt=0,minC=1e9,maxC=-1e9,ov={},claim={};const occ={},recs=[],exp=new Set(),pd=new Set();
  const place=(col,y,h)=>{y=Math.max(0,y);minC=Math.min(minC,col);maxC=Math.max(maxC,col);const L=occ[col]||(occ[col]=[]);for(let go=true;go;){go=false;for(const[a,b]of L)if(y<b-1e-6&&y+h>a+1e-6){y=b;go=true}}L.push([y,y+h]);cnt=Math.max(cnt,y+h);return y};
+ const rankCache=new Map(),branchRank=p=>{if(rankCache.has(p.id))return rankCache.get(p.id);let depth=0,count=0,q=[[p,0]],seen=new Set([p.id]);while(q.length){const[x,d]=q.shift();depth=Math.max(depth,d);for(const c of kids(x.id))if(!seen.has(c.id)){seen.add(c.id);count++;q.push([c,d+1])}}const r={depth,count};rankCache.set(p.id,r);return r};
+ const branchCmp=(a,b)=>{const A=branchRank(a),B=branchRank(b);return B.depth-A.depth||B.count-A.count||a.id-b.id};
  const lay=p=>{exp.add(p.id);
   const pt=partners(p.id).map(by),all=kids(p.id),hid=collapsed.has(p.id)||g[p.id]>=maxG;
   const gi=c=>{const j=pt.findIndex(q=>epar(c).includes(q.id));return j<0?0:j%2===0?j/2+1:-(j+1)/2};
@@ -94,7 +96,7 @@ function svg(selId,thOv){
  if(vw==="desc")lay(P);else if(vw==="ped")ped(P);
  else if(vw==="fam"){const up=new Set([P.id]),st=[P];while(st.length){const x=st.pop();for(const q of epar(x).map(by))if(q&&!up.has(q.id)&&g[q.id]>=minG){up.add(q.id);st.push(q)}}
   for(const t of ps){if(!up.has(t.id)||epar(t).some(i=>up.has(i))||exp.has(t.id)||pd.has(t.id))continue;if(cnt)cnt+=.5;lay(t)}}
- else for(const p of ps){if(p.par.length||exp.has(p.id)||pd.has(p.id)||partners(p.id).some(q=>by(q).par.length))continue;if(cnt)cnt+=.5;lay(p)}
+ else for(const p of ps.filter(p=>!p.par.length&&!partners(p.id).some(q=>by(q).par.length)).sort(branchCmp)){if(exp.has(p.id)||pd.has(p.id))continue;if(cnt)cnt+=.5;lay(p)}
  };
  const reset=()=>{cnt=0;minC=1e9;maxC=-1e9;for(const k in occ)delete occ[k];recs.length=0;exp.clear();pd.clear()};
  roots();

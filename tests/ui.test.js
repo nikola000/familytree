@@ -88,6 +88,18 @@ function app(options={}){
  assert.ok(+svg().getAttribute("width")>before*1.8,"pinch razmicanje uvećava prikaz");pointer("pointerup",2,300,100);pointer("pointerup",1,100,100);dom.window.close();
 }
 
+{
+ const data={title:"Redosled dece",version:3,persons:[{id:1,name:"Root"},{id:2,name:"Older",parents:[1]},{id:3,name:"Younger long",parents:[1]},{id:4,name:"Long 2",parents:[3]},{id:5,name:"Long 3",parents:[4]}],unions:[]},dom=app({data}),d=dom.window.document;
+ const y=id=>+d.querySelector(`#wrap g[data-id="${id}"] rect`).getAttribute("y");
+ assert.ok(y(2)<y(3),"ručni redosled braće i sestara ima prednost nad veličinom grane");dom.window.close();
+}
+
+{
+ const data={title:"Odvojene grane",version:3,persons:[{id:1,name:"Short root"},{id:2,name:"Short child",parents:[1]},{id:3,name:"Long root"},{id:4,name:"Long child",parents:[3]},{id:5,name:"Long grandchild",parents:[4]}],unions:[]},dom=app({data}),d=dom.window.document;
+ const y=id=>+d.querySelector(`#wrap g[data-id="${id}"] rect`).getAttribute("y");
+ assert.ok(y(3)<y(1),"duže odvojeno stablo se raspoređuje iznad kraćeg");dom.window.close();
+}
+
 (async()=>{
  const {addLegacyCopyAction}=await import("../netlify/functions/share-tree.mjs");
  const legacy=addLegacyCopyAction("<!doctype html><body><main>Staro stablo</main></body>","abcdefghijklmnopqrstuvwx");
