@@ -28,6 +28,9 @@ Kod je modularan po fajlovima, ali browser moduli namerno dele globalno stanje. 
 - Pretraga imena i prezimena radi između srpske ćirilice i latinice, uključujući česte oblike bez dijakritike.
 - Podeljeni link je read-only. Dugme „Sačuvaj u moja stabla“ pravi nezavisnu lokalnu kopiju i sprečava ponovni uvoz istog linka.
 - Fokusirani SVG prikazi „Peščani sat“ i „Lepeza predaka“ koriste izabranu osobu kao centar, imaju ograničenje generacija, zoom/pan i rade i u read-only podeljenom prikazu.
+- JSON v3 opciono čuva alternativna imena u `aliases`; ona ulaze u pretragu i deljene kopije. Redosled partnera prati ručno promenljiv redosled postojećeg `unions` niza.
+- Dijalog deljenja pre objave prikazuje pregled verovatno živih osoba i tačno opisuje koje godine, mesta i napomene će biti izostavljene.
+- Ručno spajanje duplikata čuva jedinstvene podatke i veze, nudi izbor konfliktnih polja, pravi prethodnu verziju i blokira rizična spajanja predaka, partnera ili više od dva roditelja.
 - Netlify objave zahtevaju `RODOSLOV_ADMIN_KEY`, ograničene su na 2 MB i najviše 365 dana. Upravljački pregled prikazuje prostor i rokove, omogućava otvaranje, kopiranje, QR kod, produženje i povlačenje linka; istekli zapisi se čiste pri otvaranju pregleda.
 - Važeći produkcioni sajt: `https://porodicnostablo.netlify.app/`.
 
@@ -62,5 +65,6 @@ npm run check
 - Podeljena kopija ne sinhronizuje naknadne izmene originala.
 - Kod složenih partnerstava peščani sat prikazuje dete jednom, povezano samo sa eksplicitnim roditeljima iz njegovog `parents` niza; partner bez zajedničkog deteta prikazuje se uz osobu bez izvedene roditeljske veze.
 - Lepeza čuva binarne slotove za nepoznate pretke, tako da očinska i majčinska strana ostaju na stabilnim polovinama prikaza.
+- Spajanje duplikata nikada se ne pokreće automatski; korisnik bira glavnu karticu, mogući duplikat i vrednost svakog konfliktnog polja.
 - Node build je kanonski za lokalni rad i Netlify; PowerShell skripte su samo pomoćne.
 - `dist/` se ne commit-uje jer ga Netlify generiše.

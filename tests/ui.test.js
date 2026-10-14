@@ -101,6 +101,23 @@ function app(options={}){
  assert.ok(y(3)<y(1),"duže odvojeno stablo se raspoređuje iznad kraćeg");dom.window.close();
 }
 
+{
+ const data={title:"Alternativna imena",version:3,persons:[{id:1,name:"Aleksandar",aliases:["Aca"]}],unions:[]},dom=app({data}),d=dom.window.document,q=d.querySelector("#sq");q.value="aca";q.dispatchEvent(new dom.window.Event("input",{bubbles:true}));assert.match(d.querySelector("#sres").textContent,/Aleksandar/);
+ d.querySelector('#wrap [data-id="1"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));d.querySelector("#mdet").click();assert.equal(d.querySelector("#d6").value,"Aca");d.querySelector("#d6").value="Aca\nSasa";d.querySelector("#mok").click();const saved=JSON.parse(dom.window.localStorage.getItem("rodoslov:tree:test-tree"));assert.deepEqual(saved.persons[0].aliases,["Aca","Sasa"]);dom.window.close();
+}
+
+{
+ const data={title:"Partneri",version:3,persons:[{id:1,name:"Main"},{id:2,name:"First"},{id:3,name:"Second"}],unions:[[1,2],[1,3]]},dom=app({data}),d=dom.window.document;d.querySelector('#wrap [data-id="1"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));d.querySelector("#mmore").click();[...d.querySelectorAll("#pop button")].find(b=>/Redosled partnera/.test(b.textContent)).click();d.querySelector('[data-porder="2"][data-dir="1"]').click();const saved=JSON.parse(dom.window.localStorage.getItem("rodoslov:tree:test-tree"));assert.deepEqual(saved.unions,[[1,3],[1,2]],"ručni redosled partnera opstaje");dom.window.close();
+}
+
+{
+ const data={title:"Duplikati",version:3,persons:[{id:1,name:"Main",parents:[3]},{id:2,name:"Duplicate",parents:[3],aliases:["Dule"]},{id:3,name:"Parent"},{id:4,name:"Child",parents:[2]},{id:5,name:"Partner"}],unions:[[2,5]]},dom=app({data}),d=dom.window.document;d.querySelector('#wrap [data-id="1"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));d.querySelector("#mmore").click();[...d.querySelectorAll("#pop button")].find(b=>/Spoji mogući duplikat/.test(b.textContent)).click();d.querySelector('#wrap [data-id="2"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));assert.match(d.querySelector("#mt").textContent,/Spoji duplikate/);d.querySelector("#mok").click();const saved=JSON.parse(dom.window.localStorage.getItem("rodoslov:tree:test-tree"));assert.equal(saved.persons.some(p=>p.id===2),false);assert.deepEqual(saved.persons.find(p=>p.id===4).parents,[1]);assert.deepEqual(saved.unions,[[1,5]]);assert.ok(saved.persons.find(p=>p.id===1).aliases.includes("Duplicate"));dom.window.close();
+}
+
+{
+ const data={title:"Privatnost",version:3,persons:[{id:1,name:"Living",born:"2000",place:"Town",note:"Private"}],unions:[]},dom=app({data}),d=dom.window.document;d.querySelector("#dshare").click();assert.match(d.querySelector("#sprev").textContent,/Pregled privatnosti/);assert.match(d.querySelector("#sprev").textContent,/1 verovatno živih/);assert.match(d.querySelector("#sprev").textContent,/biće sakrivene/);d.querySelector("#s5").checked=false;d.querySelector("#s5").dispatchEvent(new dom.window.Event("change",{bubbles:true}));assert.match(d.querySelector("#sprev").textContent,/neće biti sakriveni/);dom.window.close();
+}
+
 (async()=>{
  const {addLegacyCopyAction}=await import("../netlify/functions/share-tree.mjs");
  const legacy=addLegacyCopyAction("<!doctype html><body><main>Staro stablo</main></body>","abcdefghijklmnopqrstuvwx");

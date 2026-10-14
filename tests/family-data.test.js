@@ -38,6 +38,11 @@ function person(id,name,parents){const p={id,name};if(parents)p.parents=parents;
  assert.equal("soloParent" in out.persons[1],false);
 }
 
+{
+ const d=FamilyData.normalize({version:3,persons:[{id:1,name:"Aleksandar",aliases:["Aca"," Aca ","Sasa",""]}],unions:[]});assert.deepEqual(d.persons[0].aliases,["Aca","Sasa"]);
+ const out=FamilyData.serialize({title:"Aliasi",persons:d.persons,unions:[]});assert.deepEqual(out.persons[0].aliases,["Aca","Sasa"],"alternativna imena opstaju u JSON v3")
+}
+
 assert.throws(()=>FamilyData.normalize({version:3,persons:[person(1,"A"),person(1,"B")]}),/Dupliran ID/);
 assert.throws(()=>FamilyData.normalize({version:3,persons:[person(0,"A")]}),/Neispravan ID/);
 assert.throws(()=>FamilyData.normalize({version:3,persons:[person(1,"")]}),/nema ime/);

@@ -30,7 +30,7 @@ function renderStats(shown,gen){const g=gens(),v=Object.values(g),n=ps.length,gc
  if(gen&&shown!=null){$("gstat").hidden=false;$("gstat").textContent=`Na slici: ${shown} osoba · `+Object.keys(gen).map(Number).sort((a,b)=>a-b).map(k=>`${roman(k+1)}×${gen[k]}`).join(" · ")}else $("gstat").hidden=true}
 function rows(){const g=gens(),q=FamilyData.searchKey(tq);
  let r=ps.map(p=>{const[f,m]=parentsOf(p);return{p,f,m,pt:partners(p.id).map(by),g:g[p.id],k:kids(p.id).length,d:dcount(p.id),sn:effS(p)}});
- if(q)r=r.filter(x=>FamilyData.searchKey(x.p.name+" "+x.sn).includes(q));
+ if(q)r=r.filter(x=>FamilyData.searchKey(personSearchText(x.p)).includes(q));
  const kf={name:x=>x.p.name,sn:x=>x.sn,x:x=>x.p.x||"~",by:x=>x.p.by||"~",dy:x=>x.p.dy||"~",pl:x=>x.p.pl||"~",sl:x=>effSl(x.p)||"~",f:x=>x.f?x.f.name:"~",m:x=>x.m?x.m.name:"~",pt:x=>x.pt.map(nm).join(", ")||"~",gen:x=>x.g,k:x=>x.k,d:x=>x.d}[tsort.k];
  r.sort((a,b)=>{const x=kf(a),y=kf(b),c=typeof x==="number"?x-y:String(x).localeCompare(String(y),"sr");return(c||a.g-b.g||a.p.id-b.p.id)*tsort.d});
  return r}
@@ -48,7 +48,7 @@ let lastSel=null;
 function renderPanel(){const f=cur(),force=lastSel!==sel;lastSel=sel;
  if(f){if(force||document.activeElement!==$("nm"))$("nm").value=f.name;if(force||document.activeElement!==$("sn"))$("sn").value=f.sn;$("sn").placeholder=inhS(f)||"Prezime";$("sx").value=f.x||""}
  const fp=focus!=null?by(focus):null;
- $("fl").textContent=kinFrom!=null&&by(kinFrom)?"Dodirni drugu osobu (ili je nađi pretragom) da vidiš kako ste u rodu sa: "+nm(by(kinFrom))+" (Esc otkazuje).":linkFrom!=null&&by(linkFrom)?(linkMode==="child"?"Dodirni (ili nađi pretragom) osobu koja je dete osobe: ":linkMode==="parent"?"Dodirni (ili nađi pretragom) osobu koja je roditelj osobe: ":"Dodirni (ili nađi pretragom) osobu koju povezuješ kao partnera sa: ")+nm(by(linkFrom))+" (Esc otkazuje).":"";updInfo()}
+ $("fl").textContent=kinFrom!=null&&by(kinFrom)?"Dodirni drugu osobu (ili je nađi pretragom) da vidiš kako ste u rodu sa: "+nm(by(kinFrom))+" (Esc otkazuje).":linkFrom!=null&&by(linkFrom)?(linkMode==="merge"?"Izaberi mogući duplikat osobe: ":linkMode==="child"?"Dodirni (ili nađi pretragom) osobu koja je dete osobe: ":linkMode==="parent"?"Dodirni (ili nađi pretragom) osobu koja je roditelj osobe: ":"Dodirni (ili nađi pretragom) osobu koju povezuješ kao partnera sa: ")+nm(by(linkFrom))+" (Esc otkazuje).":"";updInfo()}
 function render(){
  if(!ps.length){mkp(NEW);sel=null}
  if(sel!=null&&!by(sel))sel=null;

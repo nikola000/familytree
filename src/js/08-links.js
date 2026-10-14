@@ -1,6 +1,7 @@
 ﻿/* povezivanje postojećih osoba */
 function linkDone(id){const a=linkFrom,mode=linkMode,A=by(a),B=by(id);linkFrom=null;
  const no=t=>{msg(t);render()};
+ if(mode==="merge"){mergePeopleDialog(A,B);render();return}
  if(mode==="partner"){if(partners(a).includes(id))return no("Već su partneri");change(()=>addU(a,id));msg("Povezani kao partneri");return}
  if(mode==="child"){
   if(ancD(a).d[id]!==undefined)return no("Ne može: ta osoba je predak ove osobe (napravilo bi krug u vezama).");

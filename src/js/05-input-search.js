@@ -35,7 +35,7 @@ $("wrap").addEventListener("pointerup",endPointer);$("wrap").addEventListener("p
 
 /* pretraga */
 function doSearch(){const q=FamilyData.searchKey($("sq").value),r=$("sres");if(!q){r.hidden=true;return}
- const g=gens(),base=$("gr").value==="0"?0:Math.min(...Object.values(g)),m=ps.filter(p=>FamilyData.searchKey(p.name+" "+effS(p)).includes(q)).slice(0,12);
+ const g=gens(),base=$("gr").value==="0"?0:Math.min(...Object.values(g)),m=ps.filter(p=>FamilyData.searchKey(personSearchText(p)).includes(q)).slice(0,12);
  r.innerHTML=m.length?m.map(p=>{const f=parentsOf(p)[0];return`<button data-id="${p.id}">${esc(nm(p))} ${esc(effS(p))}<small> · ${roman(g[p.id]-base+1)}${f?" · otac: "+esc(nm(f)):""}${p.by?" · "+esc(p.by):""}</small></button>`}).join(""):'<div class="none">Nema rezultata</div>';
  r.hidden=false}
 function pickSearch(id){$("sq").value="";$("sres").hidden=true;if(kinFrom!=null){if(id!==kinFrom)kinDone(id);return}if(linkFrom!=null){if(id!==linkFrom)linkDone(id);return}jump(id)}

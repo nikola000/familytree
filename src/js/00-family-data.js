@@ -30,6 +30,7 @@
    if(!x||typeof x.name!=="string"||!x.name.trim())throw new Error("Osoba nema ime");
    const id=Number(x.id);if(!Number.isSafeInteger(id)||id<=0)throw new Error("Neispravan ID osobe");
    const p={id,name:x.name,sn:typeof x.surname==="string"?x.surname:"",par:Array.isArray(x.parents)?x.parents.map(Number):[]};
+   if(Array.isArray(x.aliases)){p.aliases=[...new Set(x.aliases.filter(a=>typeof a==="string").map(a=>a.trim()).filter(Boolean))].slice(0,30)}
    if(version<3&&x.soloParent===true)p.solo=true;
    if(version>=3&&x.parentageUnresolved===true)p.parentageUnresolved=true;
    if(x.sex==="m"||x.sex==="f")p.x=x.sex;
@@ -47,7 +48,7 @@
  }
 
  function serialize({title,persons,unions}){
-  return{title,version:3,persons:persons.map(p=>{const o={id:p.id,name:p.name};if(p.sn)o.surname=p.sn;if(p.par.length)o.parents=[...p.par];if(p.parentageUnresolved)o.parentageUnresolved=true;if(p.x)o.sex=p.x;for(const[k,j]of FIELDS)if(p[k])o[j]=p[k];return o}),unions:unions.map(u=>[...u])}
+  return{title,version:3,persons:persons.map(p=>{const o={id:p.id,name:p.name};if(p.sn)o.surname=p.sn;if(p.aliases&&p.aliases.length)o.aliases=[...p.aliases];if(p.par.length)o.parents=[...p.par];if(p.parentageUnresolved)o.parentageUnresolved=true;if(p.x)o.sex=p.x;for(const[k,j]of FIELDS)if(p[k])o[j]=p[k];return o}),unions:unions.map(u=>[...u])}
  }
 
  return{normalize,serialize,migratePeople,partnerIds,searchKey};

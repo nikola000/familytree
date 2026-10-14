@@ -180,6 +180,7 @@ const escA=s=>esc(s).replace(/"/g,"&quot;");
 const parentsOf=p=>{const a=epar(p).map(by).filter(Boolean),m0=a.find(q=>q.x==="f"),f0=a.find(q=>q.x==="m")||a.find(q=>q!==m0&&q.x!=="f");return[f0||null,m0||a.find(q=>q!==f0)||null]};
 const dcount=id=>{const seen=new Set(),st=[id];while(st.length){const x=st.pop();for(const c of kids(x))if(!seen.has(c.id)){seen.add(c.id);st.push(c.id)}}return seen.size};
 const nm=p=>p.name.replace("|"," ");
+const aliases=p=>Array.isArray(p.aliases)?p.aliases:[],personSearchText=p=>p.name+" "+effS(p)+" "+aliases(p).join(" ");
 const setF=(p,k,v)=>{v=(v||"").trim();if(v)p[k]=v;else delete p[k]};
 const TF=["by","dy","pl","sl"];
 
