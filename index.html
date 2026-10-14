@@ -1,0 +1,68 @@
+﻿<!DOCTYPE html>
+<html lang="sr"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Uređivač rodoslova</title>
+<!-- DEV:STYLE -->
+<link rel="stylesheet" href="src/styles/app.css">
+<!-- /DEV:STYLE --></head><body>
+<header>
+<button id="hb" aria-label="Meni">☰</button>
+<input id="title" type="text" aria-label="Naslov">
+<div id="sbox"><input id="sq" type="text" placeholder="Traži osobu…" autocomplete="off"><div id="sres" hidden></div></div>
+<button id="nback" title="Prethodno posećena osoba" aria-label="Nazad kroz posećene osobe" disabled>‹</button><button id="nforward" title="Sledeća posećena osoba" aria-label="Napred kroz posećene osobe" disabled>›</button>
+<button id="undo" title="Poništi izmenu (Ctrl+Z)" aria-label="Poništi izmenu">↶</button><button id="redo" title="Vrati izmenu (Ctrl+Y)" aria-label="Vrati izmenu">↷</button>
+</header>
+<div id="sharecopy" hidden><span>Ovo je podeljeno stablo. Sačuvaj nezavisnu kopiju u ovom browseru.</span><button id="sharecopybtn" class="p">Sačuvaj u moja stabla</button></div>
+<div id="bk" hidden><span id="bkt"></span><button id="bkex">Izvezi JSON</button><button id="bklater">Kasnije</button></div>
+<div id="tabs"><button class="tab on" id="tabT">Stablo</button><button class="tab" id="tabB">Tabela</button></div>
+<div id="stats"><span id="st1"></span><button id="warn" hidden></button></div>
+<div id="gstat"></div>
+<div id="vbar" hidden><span id="vtxt"></span><button id="vback">← Nazad</button><button id="vall">Sve grane</button><button id="vshare">Napravi stablo za deljenje…</button><button id="hlclr" hidden>Ukloni označenu putanju</button></div>
+<div id="info" hidden><b id="fl"></b> <span id="msg"></span></div>
+<div id="stage"><div id="wrap"></div><div id="zoom"><button id="zi" aria-label="Uvećaj">+</button><button id="zo" aria-label="Smanji">−</button></div></div>
+<div id="tbl" hidden><div id="tbar"><input id="tq" type="text" placeholder="Pretraga u tabeli…"><span id="tcnt"></span></div><div id="bulk" hidden><b id="bn" style="font-weight:500"></b><span style="flex:1"></span><button id="bpol" data-m>Pol ▾</button><button id="bsn">Prezime…</button><button id="binf">Podaci…</button><button id="bdel">Obriši</button><button id="bclr">Poništi izbor</button></div>
+<div id="tscroll"><table id="tt"></table></div></div>
+<div id="panel" hidden>
+<div class="row"><input id="nm" type="text" placeholder="Ime"><input id="sn" type="text" placeholder="Prezime">
+<select id="sx" aria-label="Pol"><option value="">Pol: ?</option><option value="m">Muški</option><option value="f">Ženski</option></select><button id="pclose" aria-label="Zatvori">✕</button></div>
+<div class="row"><button id="madd" data-m>Dodaj ▾</button><button id="mlink" data-m>Veze ▾</button><button id="mnav" data-m>Idi na ▾</button><button id="mdet">Podaci</button><button id="mkin">Srodstvo</button><button id="foc" class="p">Stablo osobe</button><button id="mmore" data-m>Više ▾</button></div>
+</div>
+<div id="scrim" hidden></div>
+<aside id="drawer" hidden>
+<button id="dclose" style="align-self:flex-end">✕ Zatvori</button>
+<h3>Prikaz</h3>
+<select id="vw"><option value="all">Prikaz: sve grane</option><option value="fam">Prikaz: porodica izabrane osobe</option><option value="desc">Prikaz: potomci izabrane</option><option value="ped">Prikaz: preci izabrane</option></select>
+<select id="gb"></select><select id="gf"></select>
+<select id="gr"><option value="1">Brojanje generacija: od prikaza (I = najstariji na slici)</option><option value="0">Brojanje generacija: od rodonačelnika</option></select>
+<select id="pn"><option value="0">Ime oca uz ime: ne</option><option value="1">Ime oca uz ime: da (Никола Бајов)</option></select>
+<select id="sm"><option value="all">Prezimena: sva</option><option value="diff">Prezimena: kad se razlikuju</option><option value="none">Prezimena: sakrij</option></select>
+<select id="yr"><option value="1">Godine na kartici: prikaži</option><option value="0">Godine na kartici: sakrij</option></select>
+<select id="th"><option value="light">Tema: Svetla</option><option value="cards">Tema: Karte za igru</option><option value="print">Tema: Za štampu (crno-belo)</option></select>
+<h3>Fajl</h3>
+<button id="dimp">Uvezi JSON</button><button id="dj">Izvezi JSON (rezervna kopija)</button><button id="di">Izvezi sliku (PNG)</button><button id="dc">Izvezi tabelu (CSV)</button>
+<h3>Štampa i provera</h3>
+<button id="dprint">Štampaj…</button><button id="dps">Izvezi SVG za štampu</button><button id="dpp">Izvezi PNG za štampu (4x)</button><button id="dchk">Provera grešaka…</button>
+<h3>Deljenje</h3>
+<button id="dshare">Napravi stablo za deljenje…</button><button id="dnet">Netlify objave…</button><p>Iz trenutnog prikaza ili označenih osoba pravi se novo, manje stablo (samostalna stranica, JSON, lokalno stablo ili Netlify link).</p>
+<h3>Stabla i rezervne kopije</h3><button id="dvers">Stabla i prostor…</button><p id="bkinfo"></p>
+<h3>Legenda</h3><p>„↑" na kartici: potomci su prikazani na drugom mestu. „+N": skupljeni potomci. Boje veza: svaki brak ima svoju boju. Tekst posle „|" u imenu piše ispod kartice (npr. Ime|napomena…). Ctrl + točkić: zoom.</p>
+</aside>
+<div id="modal" hidden><div id="mbox"><h3 id="mt"></h3><div id="mb"></div><div class="row"><button id="mok" class="p">Sačuvaj</button><button id="mno">Otkaži</button></div></div></div>
+<input id="file" type="file" accept=".json,application/json" hidden>
+<!-- DEV:SCRIPTS -->
+<script src="src/js/00-family-data.js"></script>
+<script src="src/js/01-core.js"></script>
+<script src="src/js/01-tree-library.js"></script>
+<script src="src/js/02-storage.js"></script>
+<script src="src/js/03-shell-ui.js"></script>
+<script src="src/js/04-people-actions.js"></script>
+<script src="src/js/05-input-search.js"></script>
+<script src="src/js/06-table.js"></script>
+<script src="src/js/07-bulk-actions.js"></script>
+<script src="src/js/08-links.js"></script>
+<script src="src/js/09-sharing.js"></script>
+<script src="src/js/09-netlify-sharing.js"></script>
+<script src="src/js/10-kinship-print.js"></script>
+<script src="src/js/11-io-bootstrap.js"></script>
+<!-- /DEV:SCRIPTS --></body></html>
+
