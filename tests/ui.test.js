@@ -82,6 +82,12 @@ function app(options={}){
  dom.window.close();
 }
 
+{
+ const dom=app({data:{title:"Dodir",version:3,persons:[{id:1,name:"Root"}],unions:[]}}),d=dom.window.document,w=d.querySelector("#wrap"),svg=()=>d.querySelector("#wrap svg"),pointer=(type,id,x,y)=>{const e=new dom.window.Event(type,{bubbles:true,cancelable:true});Object.defineProperties(e,{pointerId:{value:id},pointerType:{value:"touch"},button:{value:0},clientX:{value:x},clientY:{value:y}});w.dispatchEvent(e)};
+ const before=+svg().getAttribute("width");pointer("pointerdown",1,100,100);pointer("pointerdown",2,200,100);pointer("pointermove",2,300,100);
+ assert.ok(+svg().getAttribute("width")>before*1.8,"pinch razmicanje uvećava prikaz");pointer("pointerup",2,300,100);pointer("pointerup",1,100,100);dom.window.close();
+}
+
 (async()=>{
  const {addLegacyCopyAction}=await import("../netlify/functions/share-tree.mjs");
  const legacy=addLegacyCopyAction("<!doctype html><body><main>Staro stablo</main></body>","abcdefghijklmnopqrstuvwx");
