@@ -32,7 +32,7 @@ Kod je modularan po fajlovima, ali browser moduli namerno dele globalno stanje. 
 - JSON v3 opciono čuva alternativna imena u `aliases`; ona ulaze u pretragu i deljene kopije. Redosled partnera prati ručno promenljiv redosled postojećeg `unions` niza.
 - Dijalog deljenja pre objave prikazuje pregled verovatno živih osoba i tačno opisuje koje godine, mesta i napomene će biti izostavljene.
 - Ručno spajanje duplikata čuva jedinstvene podatke i veze, nudi izbor konfliktnih polja, pravi prethodnu verziju i blokira rizična spajanja predaka, partnera ili više od dva roditelja.
-- Netlify objave zahtevaju `RODOSLOV_ADMIN_KEY`, ograničene su na 2 MB i najviše 365 dana. Upravljački pregled prikazuje prostor i rokove, omogućava otvaranje, kopiranje, QR kod, produženje i povlačenje linka; istekli zapisi se čiste pri otvaranju pregleda.
+- Netlify objave zahtevaju `RODOSLOV_ADMIN_KEY`, ograničene su na 2 MB i najviše 365 dana. Ključ može važiti samo tokom sesije ili, uz izričit izbor, ostati u lokalnom skladištu tog uređaja; nikada ne ulazi u deljeni link. Upravljački pregled prikazuje prostor i rokove, omogućava otvaranje, sistemsko deljenje, kopiranje, QR kod, produženje i povlačenje linka; istekli zapisi se čiste pri otvaranju pregleda.
 - Opcije prikaza koriste prekidače za binarne vrednosti, segmentirane izbore za male skupove i steper čiji maksimum prati stvarnu dubinu predaka i potomaka. Panel izabrane osobe razdvaja glavne i pomoćne akcije, a zajednički dijalog upravlja redosledom braće/sestara i partnera. Fajl i štampa su sklopljene grupe; deljenje prvo nudi Netlify link, pa sistemski Share panel podržanog uređaja. Odluke i naredne UI ideje vode se u `docs/UI_DESIGN.md`.
 - Važeći produkcioni sajt: `https://porodicnostablo.netlify.app/`.
 
@@ -52,7 +52,7 @@ npm run check
 - `main` istorija je 14. oktobra 2026. očišćena i ponovo započeta privacy-safe commitom.
 - U repozitorijum ne vraćati stvarna imena ili porodični seed čak ni kao test fixture.
 - Stari klonovi, ranije sačuvani commit URL-ovi i već napravljeni Netlify deploy/link mogu postojati van aktuelne Git istorije; korisnik njima upravlja kroz GitHub/Netlify.
-- `RODOSLOV_ADMIN_KEY` postoji samo u Netlify environment variables i korisnikovom `sessionStorage`.
+- `RODOSLOV_ADMIN_KEY` postoji u Netlify environment variables; browser ga čuva u `sessionStorage`, ili opciono u `localStorage` samo kada korisnik uključi „Zapamti ključ na ovom uređaju“.
 
 ## Sledeće faze
 

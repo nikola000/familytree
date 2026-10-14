@@ -31,7 +31,8 @@ Redosled se uređuje u jednom dijalogu sa pregledom braće/sestara i partnera. S
 ## Deljenje i pomoćne alatke
 
 - Deljenje je istaknuta akcija, sa Netlify linkom kao prvim odredištem.
-- Kada link postoji, „Podeli preko aplikacije“ koristi sistemski Share panel; ako nije podržan, link se kopira.
+- Kada link nastane, aplikacija odmah pokušava da otvori sistemski Share panel dok korisnički gest još važi. Dugme „Podeli preko aplikacije“ ostaje pouzdana rezerva; ako API nije podržan, link se kopira.
+- Administratorski ključ ostaje zaštita od javnog neograničenog uploada, ali korisnik može izabrati da ga browser zapamti samo na tom uređaju.
 - Upravljanje postojećim objavama ostaje neposredno uz akciju deljenja.
 - Fajl/izvoz i štampa/provera su sklopljene grupe jer se koriste ređe od prikaza i deljenja.
 
@@ -40,6 +41,10 @@ Redosled se uređuje u jednom dijalogu sa pregledom braće/sestara i partnera. S
 Ikone su interni SVG sprite (`20×20`, `stroke=currentColor`), bez fonta, CDN-a ili spoljne biblioteke. Kada stoje uz tekst imaju `aria-hidden=true`; ikonice bez teksta moraju imati `aria-label` i `title`.
 
 Planirani simboli: dodavanje osobe, olovka/podaci, veza, meta/fokus, putanja/srodstvo, redosled, navigacija, spajanje, štit/privatnost, deljenje, izvoz, brisanje, teme, peščani sat i lepeza.
+
+## Tipografija
+
+Osnovni interfejs koristi sistemski varijabilni sans-serif (`Segoe UI Variable Text`, `Aptos`, pa sistemski fallback), bez spoljnog font servisa. Tako aplikacija ostaje brza i privatna, a tekst je mirniji i čitljiviji na Windowsu i telefonu. Tema karata zadržava serifni karakter.
 
 ## Pristupačnost
 

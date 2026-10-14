@@ -9,7 +9,7 @@ document.addEventListener("click",e=>{if(popEl&&!popEl.contains(e.target)&&!e.ta
 const openDrawer=o=>{$("drawer").hidden=!o;$("scrim").hidden=!o};
 $("hb").onclick=()=>openDrawer(true);$("dclose").onclick=()=>openDrawer(false);$("scrim").onclick=()=>openDrawer(false);
 let modalOk=null;
-function openModal(title,body,ok,label){$("mbox").classList.remove("wide");$("mt").textContent=title;$("mb").innerHTML=body;$("mok").textContent=label||"Sačuvaj";modalOk=ok;$("modal").hidden=false}
+function openModal(title,body,ok,label){$("mbox").classList.remove("wide","share-modal");$("mt").textContent=title;$("mb").innerHTML=body;$("mok").textContent=label||"Sačuvaj";modalOk=ok;$("modal").hidden=false}
 const closeModal=()=>{$("modal").hidden=true;modalOk=null};
 $("mok").onclick=()=>{const f=modalOk;if(f)f();closeModal()};$("mno").onclick=closeModal;
 $("modal").onclick=e=>{if(e.target===$("modal"))closeModal()};
