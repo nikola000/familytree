@@ -7,7 +7,7 @@ $("title").oninput=e=>{if(READ_ONLY)return;if(!e.target.dataset.p){push();e.targ
 $("title").onchange=e=>{delete e.target.dataset.p;render()};
 $("title").onblur=e=>{delete e.target.dataset.p};
 for(const s of["sm","gb","gf","yr","pn","gr"])$(s).onchange=()=>render();
-$("vw").onchange=()=>{vstack.push({vw:lastVw,focus});if($("vw").value!=="all"&&(focus==null||!by(focus))){if(sel!=null)focus=sel;else{$("vw").value="all";msg("Izaberi osobu pa dodirni „Stablo osobe“")}}render()};
+$("vw").onchange=()=>{vstack.push({vw:lastVw,focus});if($("vw").value!=="all"&&(focus==null||!by(focus))&&sel!=null)focus=sel;render()};
 const live=(el,k)=>{el.oninput=e=>{if(READ_ONLY)return;const f=cur();if(!f)return;if(!el.dataset.p){push();el.dataset.p=1}f[k]=e.target.value;save();const w=$("wrap"),sc=w.scrollLeft,st=w.scrollTop;render();w.scrollLeft=sc;w.scrollTop=st};el.onblur=()=>{delete el.dataset.p}};
 live($("nm"),"name");live($("sn"),"sn");
 $("sx").onchange=()=>change(()=>{cur().x=$("sx").value});
@@ -17,6 +17,10 @@ $("wrap").addEventListener("wheel",e=>{if(!(e.ctrlKey||e.metaKey))return;e.preve
  const w=$("wrap"),rc=w.getBoundingClientRect(),mx=e.clientX-rc.left,my=e.clientY-rc.top,px=mx+w.scrollLeft,py=my+w.scrollTop;
  const nz=Math.min(3,Math.max(.2,zoom*(e.deltaY<0?1.1:1/1.1))),k=nz/zoom;if(k===1)return;zoom=nz;render();
  w.scrollLeft=px*k-mx;w.scrollTop=py*k-my},{passive:false});
+let panStart=null,panMoved=false;
+$("wrap").addEventListener("pointerdown",e=>{if(e.button!==0||e.target.closest("[data-id]"))return;const w=$("wrap");panStart={x:e.clientX,y:e.clientY,l:w.scrollLeft,t:w.scrollTop};panMoved=false;w.classList.add("dragging");if(w.setPointerCapture)w.setPointerCapture(e.pointerId)});
+$("wrap").addEventListener("pointermove",e=>{if(!panStart)return;const dx=e.clientX-panStart.x,dy=e.clientY-panStart.y;if(Math.abs(dx)+Math.abs(dy)>4)panMoved=true;$("wrap").scrollLeft=panStart.l-dx;$("wrap").scrollTop=panStart.t-dy});
+$("wrap").addEventListener("pointerup",()=>{panStart=null;$("wrap").classList.remove("dragging")});
 
 /* pretraga */
 function doSearch(){const q=FamilyData.searchKey($("sq").value),r=$("sres");if(!q){r.hidden=true;return}

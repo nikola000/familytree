@@ -51,6 +51,37 @@ function app(options={}){
  dom.window.close();
 }
 
+{
+ const data={title:"Fokus",version:3,persons:[
+  {id:1,name:"Root",parents:[2]},{id:2,name:"Parent",parents:[4]},{id:3,name:"Partner"},{id:4,name:"Grandparent"},
+  {id:5,name:"Child",parents:[1,3]},{id:6,name:"Grandchild",parents:[5]},{id:7,name:"Sibling",parents:[2]},{id:8,name:"Unrelated"}
+ ],unions:[[1,3]]},dom=app({data}),d=dom.window.document;
+ d.querySelector('#wrap [data-id="1"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));
+ const view=d.querySelector("#vw");view.value="hourglass";view.dispatchEvent(new dom.window.Event("change",{bubbles:true}));
+ assert.equal(d.querySelector("#wrap svg").dataset.view,"hourglass");
+ assert.ok(d.querySelector('#wrap [data-id="1"]'),"fokusna osoba je prikazana");
+ assert.ok(d.querySelector('#wrap [data-id="3"]'),"partner fokusne osobe je prikazan");
+ assert.equal(d.querySelector('#wrap [data-id="7"]'),null,"bočna grana pretka nije prikazana");
+ assert.equal(d.querySelector('#wrap [data-id="8"]'),null,"nepovezana osoba nije prikazana");
+ d.querySelector("#gb").value="1";d.querySelector("#gf").value="1";d.querySelector("#gf").dispatchEvent(new dom.window.Event("change",{bubbles:true}));
+ assert.ok(d.querySelector('#wrap [data-id="2"]'));assert.ok(d.querySelector('#wrap [data-id="5"]'));
+ assert.equal(d.querySelector('#wrap [data-id="4"]'),null,"ograničenje predaka radi");assert.equal(d.querySelector('#wrap [data-id="6"]'),null,"ograničenje potomaka radi");
+ d.querySelector('#wrap [data-id="5"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));assert.equal(d.querySelector("#nm").value,"Child","klik bira osobu za editor");assert.equal(d.querySelector('#wrap [data-id="5"]').dataset.kind,"person","klik menja centar peščanog sata");
+ view.value="fan";view.dispatchEvent(new dom.window.Event("change",{bubbles:true}));
+ assert.equal(d.querySelector("#wrap svg").dataset.view,"fan");assert.equal(d.querySelector('#wrap [data-id="5"]').dataset.kind,"root","izabrana osoba je u centru lepeze");assert.ok(d.querySelectorAll("#wrap [data-empty]").length>0,"nepoznati preci zadržavaju slotove");
+ assert.equal(d.querySelector('#wrap [data-id="7"]'),null,"lepeza ne uključuje braću i sestre");
+ dom.window.close();
+}
+
+{
+ const embed={id:"focused-shared",data:{title:"Podeljeno",version:3,persons:[{id:1,name:"Root",parents:[2]},{id:2,name:"Parent"}],unions:[]}},dom=app({embed}),d=dom.window.document;
+ d.querySelector('#wrap [data-id="1"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));const view=d.querySelector("#vw");view.value="hourglass";view.dispatchEvent(new dom.window.Event("change",{bubbles:true}));
+ assert.equal(d.querySelector("#wrap svg").dataset.view,"hourglass");assert.equal(d.querySelector("#panel").hidden,true,"fokusirani read-only prikaz ne otvara editor");
+ view.value="fan";view.dispatchEvent(new dom.window.Event("change",{bubbles:true}));assert.equal(d.querySelector("#wrap svg").dataset.view,"fan");
+ assert.equal(dom.window.localStorage.getItem("rodoslov:focused-shared"),null);
+ dom.window.close();
+}
+
 (async()=>{
  const {addLegacyCopyAction}=await import("../netlify/functions/share-tree.mjs");
  const legacy=addLegacyCopyAction("<!doctype html><body><main>Staro stablo</main></body>","abcdefghijklmnopqrstuvwx");

@@ -53,14 +53,15 @@ function render(){
  if(!ps.length){mkp(NEW);sel=null}
  if(sel!=null&&!by(sel))sel=null;
  applyTab();let shown=null,gen=null;
- if(tab==="tree"){const r=svg(sel);$("wrap").innerHTML=r.s.replace(/width="\d+" height="\d+"( viewBox)/,`width="${r.w*zoom}" height="${r.h*zoom}"$1`);shown=r.shown||0;gen=r.gen;renderPanel()}
+ if(tab==="tree"){const r=viewSvg(sel);$("wrap").innerHTML=r.s.replace(/width="\d+" height="\d+"( viewBox)/,`width="${r.w*zoom}" height="${r.h*zoom}"$1`);shown=r.shown||0;gen=r.gen;renderPanel()}
  else renderTable();
  renderStats(shown,gen);$("undo").disabled=!stack.length;$("redo").disabled=!redo.length;if(typeof updateNavigation==="function")updateNavigation();renderVbar();lastVw=$("vw").value}
 let lastVw="all",vstack=[];
-const VN={fam:"porodica osobe",desc:"potomci osobe",ped:"preci osobe"};
+const VN={hourglass:"peščani sat osobe",fan:"lepeza predaka osobe",fam:"porodica osobe",desc:"potomci osobe",ped:"preci osobe"};
 function renderVbar(){const fp=focus!=null?by(focus):null,vw=$("vw").value,on=tab==="tree"&&fp&&vw!=="all";
  $("vbar").hidden=!(tab==="tree"&&(on||hlSet.size));
- $("vtxt").textContent=on?`Prikaz: ${VN[vw]} ${nm(fp)}`+(vw!=="desc"?` · unazad: ${$("gb").value==="99"?"sve":$("gb").value}`:"")+(vw!=="ped"?` · unapred: ${$("gf").value==="99"?"sve":$("gf").value}`:""):"";
+ const back=vw!=="desc",forward=vw!=="ped"&&vw!=="fan";
+ $("vtxt").textContent=on?`Prikaz: ${VN[vw]} ${nm(fp)}`+(back?` · unazad: ${$("gb").value==="99"?"sve":$("gb").value}`:"")+(forward?` · unapred: ${$("gf").value==="99"?"sve":$("gf").value}`:""):"";
  $("vback").hidden=!on;$("vall").hidden=!on;$("vshare").hidden=!on;$("hlclr").hidden=!hlSet.size}
 $("vback").onclick=()=>{const v=vstack.pop();if(v){$("vw").value=v.vw;focus=v.focus}else $("vw").value="all";render()};
 $("vall").onclick=()=>{vstack.push({vw:$("vw").value,focus});$("vw").value="all";render()};

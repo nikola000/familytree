@@ -15,7 +15,7 @@ function buildShare(S,ttl,noNotes,protectLiving,fmt){const data=subsetJ(S,ttl,no
  const emb={id:Date.now().toString(36),data},js=JSON.stringify(emb).replace(/</g,"\\u003c").replace(/\u2028|\u2029/g,"");
  const html="<!DOCTYPE html>\n"+SRC.replace(/^<!DOCTYPE[^>]*>\s*/i,"").replace("<"+"script>","<"+"script id=\"embed\">const EMBED="+js+";<"+"/script>\n<"+"script>").replace(/<title>[\s\S]*?<\/title>/,"<title>"+esc(ttl)+"</title>");
  return{text:html,count:data.persons.length,mime:"text/html",ext:"html"}}
-function shareDialog(){const r=svg(null),ids=new Set(r.ids),sel_=tsel.size?new Set(tsel):null,fp=focus!=null?by(focus):null,dflt=fp&&$("vw").value!=="all"?"Породично стабло: "+nm(fp):title;
+function shareDialog(){const r=viewSvg(null),ids=new Set(r.ids),sel_=tsel.size?new Set(tsel):null,fp=focus!=null?by(focus):null,dflt=fp&&$("vw").value!=="all"?"Породично стабло: "+nm(fp):title;
  openModal("Napravi stablo za deljenje",`<label>Naziv novog stabla<input id="s1" type="text" value="${escA(dflt)}"></label>
 <label>Šta uključiti<select id="s2"><option value="view">Ono što je sada na slici (${ids.size} osoba)</option>${sel_?`<option value="sel">Označene u tabeli (${sel_.size} osoba)</option>`:""}</select></label>
 <label>Odredište<select id="s3"><option value="html">Samostalna stranica (HTML) – otvara se dvoklikom</option><option value="json">JSON – za uvoz ili rezervnu kopiju</option>${EMB?"":'<option value="local">Novo lokalno stablo u biblioteci</option><option value="netlify">Netlify link</option>'}</select></label>

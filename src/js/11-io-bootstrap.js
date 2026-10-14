@@ -9,7 +9,7 @@ function expC(){const q=v=>'"'+String(v).replace(/"/g,'""')+'"',head=["Ime","Pre
  const lines=[head.map(q).join(",")].concat(rows().map(x=>[nm(x.p),x.sn,x.p.x==="m"?"M":x.p.x==="f"?"Ž":"",x.p.by||"",x.p.dy||"",x.p.pl||"",effSl(x.p),x.p.nt||"",x.f?nm(x.f):"",x.m?nm(x.m):"",x.pt.map(nm).join("; "),roman(x.g+1),x.k,x.d].map(q).join(",")));
  saveFile("rodoslov.csv",new Blob(["\ufeff"+lines.join("\r\n")],{type:"text/csv"}))}
 function expI(){
- const r=svg(null),k=2,img=new Image();
+ const r=viewSvg(null),k=2,img=new Image();
  img.onload=()=>{const c=document.createElement("canvas");c.width=r.w*k;c.height=r.h*k;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);
   c.toBlob(b=>b?saveFile("rodoslov.png",b):msg("Izvoz slike nije uspeo"),"image/png")};
  img.onerror=()=>msg("Izvoz slike nije uspeo");

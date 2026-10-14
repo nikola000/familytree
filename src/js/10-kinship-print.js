@@ -69,8 +69,8 @@ let printPrev=null;
 function doPrint(){openDrawer(false);tab="tree";printPrev=$("th").value;if(printPrev!=="print"){$("th").value="print";setTheme("print")}render();setTimeout(()=>window.print(),50)}
 window.onafterprint=()=>{if(printPrev&&printPrev!=="print"){$("th").value=printPrev;setTheme(printPrev);render()}printPrev=null};
 $("dprint").onclick=doPrint;
-function expS(){saveFile("rodoslov.svg",new Blob([svg(null,"print").s],{type:"image/svg+xml"}))}
-function expP(){const r=svg(null,"print"),k=Math.min(4,16000/Math.max(r.w,r.h)),img=new Image();
+function expS(){saveFile("rodoslov.svg",new Blob([viewSvg(null,"print").s],{type:"image/svg+xml"}))}
+function expP(){const r=viewSvg(null,"print"),k=Math.min(4,16000/Math.max(r.w,r.h)),img=new Image();
  img.onload=()=>{const c=document.createElement("canvas");c.width=Math.round(r.w*k);c.height=Math.round(r.h*k);const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);c.toBlob(b=>b?saveFile("rodoslov-stampa.png",b):msg("Izvoz slike nije uspeo"),"image/png")};
  img.onerror=()=>msg("Izvoz slike nije uspeo");img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(r.s)}
 $("dps").onclick=expS;$("dpp").onclick=expP;

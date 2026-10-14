@@ -3,7 +3,7 @@ $("tabT").onclick=()=>{tab="tree";render()};$("tabB").onclick=()=>{tab="tbl";ren
 $("tq").oninput=e=>{tq=e.target.value;renderTable()};
 const navBack=[],navForward=[];
 function updateNavigation(){$("nback").disabled=!navBack.length;$("nforward").disabled=!navForward.length}
-function jump(id,record=true){if(!by(id)){msg("Osoba više ne postoji u ovom stablu");return}openDrawer(false);if(record&&sel!=null&&sel!==id){navBack.push(sel);if(navBack.length>50)navBack.shift();navForward.length=0}sel=id;tab="tree";render();let g=document.querySelector(`#wrap [data-id="${id}"]`);
+function jump(id,record=true){if(!by(id)){msg("Osoba više ne postoji u ovom stablu");return}openDrawer(false);if(record&&sel!=null&&sel!==id){navBack.push(sel);if(navBack.length>50)navBack.shift();navForward.length=0}sel=id;if($("vw").value==="hourglass"||$("vw").value==="fan")focus=id;tab="tree";render();let g=document.querySelector(`#wrap [data-id="${id}"]`);
  if(!g){$("vw").value="all";collapsed.clear();render();g=document.querySelector(`#wrap [data-id="${id}"]`)}
  if(g&&g.scrollIntoView)g.scrollIntoView({block:"center",inline:"center"})}
 $("nback").onclick=()=>{const id=navBack.pop();if(id==null)return;if(sel!=null)navForward.push(sel);jump(id,false)};
