@@ -28,7 +28,7 @@ Kod je modularan po fajlovima, ali browser moduli namerno dele globalno stanje. 
 - Pretraga imena i prezimena radi između srpske ćirilice i latinice, uključujući česte oblike bez dijakritike.
 - Podeljeni link je read-only. Dugme „Sačuvaj u moja stabla“ pravi nezavisnu lokalnu kopiju i sprečava ponovni uvoz istog linka.
 - Fokusirani SVG prikazi „Peščani sat“ i „Lepeza predaka“ koriste izabranu osobu kao centar, imaju ograničenje generacija, zoom/pan i rade i u read-only podeljenom prikazu.
-- Netlify objave zahtevaju `RODOSLOV_ADMIN_KEY`, ograničene su na 2 MB i najviše 365 dana.
+- Netlify objave zahtevaju `RODOSLOV_ADMIN_KEY`, ograničene su na 2 MB i najviše 365 dana. Upravljački pregled prikazuje prostor i rokove, omogućava otvaranje, kopiranje, QR kod, produženje i povlačenje linka; istekli zapisi se čiste pri otvaranju pregleda.
 - Važeći produkcioni sajt: `https://porodicnostablo.netlify.app/`.
 
 ## Provera
@@ -52,7 +52,7 @@ npm run check
 ## Sledeće faze
 
 1. GEDCOM: prvo dokumentovati podržani podskup, zatim uvoz, test fixtures i izvoz.
-2. Upravljanje deljenjem: automatsko čišćenje isteklih zapisa, produženje roka i pregled prostora; zatim opciona lozinka i QR kod.
+2. Deljenje: opciona zaštita linka lozinkom.
 3. Bogatiji podaci: događaji, izvori, alternativna imena i duplikati.
 4. Nalozi/sinhronizacija samo kao posebna, unapred odobrena promena arhitekture.
 

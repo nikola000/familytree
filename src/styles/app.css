@@ -12,6 +12,7 @@ body{background:var(--bg);color:var(--fg);font:15px/1.3 system-ui,-apple-system,
 .onboard-storage{padding:12px;border-radius:10px;background:var(--bg);display:flex;flex-direction:column;gap:4px}
 @media(max-width:520px){.onboard-card{padding:18px}.onboard-choices{grid-template-columns:1fr}.onboard-choice{min-height:0}}
 button,select{font:inherit;padding:7px 10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:8px;cursor:pointer}
+a.button{font:inherit;padding:7px 10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:8px;cursor:pointer;text-decoration:none;box-sizing:border-box}
 button.p{background:var(--ac);color:#fff;border-color:var(--ac)}
 button.d{color:#c0392b}
 button:disabled{opacity:.4}
@@ -76,5 +77,6 @@ html[data-th="cards"]:not(#z) body::after{content:"";position:fixed;inset:0;bord
 #drawer p{font-size:12px;color:var(--mut);margin:2px 0}
 #modal{position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:70;display:flex;align-items:center;justify-content:center}
 #mbox{background:var(--card);padding:14px;border-radius:12px;width:min(420px,92vw);max-height:90vh;overflow:auto;display:flex;flex-direction:column;gap:8px}
+#mbox.wide{width:min(760px,92vw)}.net-summary{display:flex;flex-wrap:wrap;gap:8px 18px;margin:0;padding:9px 11px;background:var(--bg);border-radius:9px}.net-list{display:flex;flex-direction:column;gap:7px}.net-card{border:1px solid var(--bd);border-radius:10px;padding:9px;display:grid;gap:6px}.net-card small{color:var(--mut)}.net-qr{text-align:center}.net-qr img{width:min(280px,75vw);height:auto;border:8px solid #fff;border-radius:8px}
 #mbox label{display:flex;flex-direction:column;font-size:13px;gap:3px}#mbox h3{margin:0}
 

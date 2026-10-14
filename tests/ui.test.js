@@ -11,6 +11,7 @@ function app(options={}){
  const source=options.embed?html.replace("<script>",`<script id="embed">const EMBED=${JSON.stringify(options.embed)};</script><script>`):html;
  return new JSDOM(source,{runScripts:"dangerously",url:"https://example.test/",pretendToBeVisual:true,virtualConsole:quiet,beforeParse(window){
   if(options.data){const id="test-tree";window.localStorage.setItem("rodoslov:registry",JSON.stringify([{id,name:options.data.title,created:1,updated:1,count:options.data.persons.length}]));window.localStorage.setItem("rodoslov:active",id);window.localStorage.setItem("rodoslov:tree:"+id,JSON.stringify(options.data))}
+  if(options.net){window.localStorage.setItem("rodoslov:netlify:url","https://trees.test");window.sessionStorage.setItem("rodoslov:netlify:admin","test-key");window.fetch=options.net}
  }});
 }
 
@@ -104,5 +105,10 @@ function app(options={}){
  const {addLegacyCopyAction}=await import("../netlify/functions/share-tree.mjs");
  const legacy=addLegacyCopyAction("<!doctype html><body><main>Staro stablo</main></body>","abcdefghijklmnopqrstuvwx");
  assert.match(legacy,/sharecopybtn-legacy/);assert.match(legacy,/dataset\.shared="readonly"/);
+ const calls=[],token="abcdefghijklmnopqrstuvwx",fetch=async(url,options={})=>{calls.push({url,options});return{ok:true,status:200,json:async()=>options.method==="PATCH"?{token,expires:Date.now()+90*86400000}:{items:[{token,title:"Test objava",created:Date.now()-1000,expires:Date.now()+30*86400000,size:1234}],totalSize:1234,removedExpired:0}}};
+ const dom=app({data:{title:"Mreža",version:3,persons:[{id:1,name:"Osoba"}],unions:[]},net:fetch}),d=dom.window.document;d.querySelector("#dnet").click();await new Promise(r=>setTimeout(r,0));
+ assert.equal(d.querySelector("#mt").textContent,"Netlify objave");assert.ok(d.querySelector("[data-netextend]"));assert.ok(d.querySelector("[data-netdel]"));assert.match(d.querySelector(".net-summary").textContent,/1.*aktivnih linkova/);
+ d.querySelector("[data-netqr]").click();assert.match(d.querySelector(".net-qr img").src,/qr-code\?token=abcdefghijklmnopqrstuvwx/);
+ d.querySelector("#dnet").click();await new Promise(r=>setTimeout(r,0));d.querySelector("[data-netextend]").click();d.querySelector("#mok").click();await new Promise(r=>setTimeout(r,10));assert.ok(calls.some(x=>x.options.method==="PATCH"),"produženje koristi PATCH");dom.window.close();
  console.log("ui: svi testovi su prošli");
 })().catch(e=>{console.error(e);process.exitCode=1});

@@ -4,11 +4,12 @@
   "version": "1.0.0",
   "scripts": {
     "build": "node tools/build.mjs",
-    "test": "node tests/family-data.test.js && node tests/ui.test.js",
+    "test": "node tests/family-data.test.js && node tests/ui.test.js && node tests/netlify-functions.test.mjs",
     "check": "npm run build && npm run test"
   },
   "dependencies": {
-    "@netlify/blobs": "^11.1.4"
+    "@netlify/blobs": "^11.1.4",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
     "jsdom": "^30.1.2"
