@@ -20,7 +20,7 @@ export async function manageTrees(req,{store=null,now=Date.now()}={}){
  }
  if(req.method!=="GET")return json({error:"Method not allowed"},405,cors);
  const {blobs}=await store.list(),items=[];let removedExpired=0;
- for(const b of blobs){const x=await store.get(b.key,{type:"json"});if(!x)continue;if(x.expires&&now>x.expires){await store.delete(b.key);removedExpired++;continue}items.push({token:b.key,title:x.title,created:x.created,expires:x.expires,size:x.size})}
+ for(const b of blobs){const x=await store.get(b.key,{type:"json",consistency:"strong"});if(!x)continue;if(x.expires&&now>x.expires){await store.delete(b.key);removedExpired++;continue}items.push({token:b.key,title:x.title,created:x.created,expires:x.expires,size:x.size})}
  items.sort((a,b)=>b.created-a.created);return json({items,removedExpired,totalSize:items.reduce((n,x)=>n+(x.size||0),0)},200,cors)
 }
 export default req=>manageTrees(req);

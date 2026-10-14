@@ -8,11 +8,11 @@ const data=new Map([
  [active,{title:"Aktivno",created:now-1000,expires:now+86400000,size:120,html:"<html></html>"}],
  [expired,{title:"Isteklo",created:now-2000,expires:now-1,size:80,html:"<html></html>"}]
 ]);
-const store={list:async()=>({blobs:[...data.keys()].map(key=>({key}))}),get:async token=>data.get(token)||null,delete:async token=>data.delete(token),setJSON:async(token,value)=>data.set(token,value)};
+const reads=[],store={list:async()=>({blobs:[...data.keys()].map(key=>({key}))}),get:async(token,options)=>{reads.push(options);return data.get(token)||null},delete:async token=>data.delete(token),setJSON:async(token,value)=>data.set(token,value)};
 const request=(method,url="https://example.test/.netlify/functions/manage-trees",body)=>new Request(url,{method,headers:{"x-rodoslov-key":key,...(body?{"content-type":"application/json"}:{})},body:body?JSON.stringify(body):undefined});
 
 {
- const r=await manageTrees(request("GET"),{store,now}),d=await r.json();assert.equal(r.status,200);assert.equal(d.items.length,1);assert.equal(d.items[0].token,active);assert.equal(d.removedExpired,1);assert.equal(d.totalSize,120);assert.equal(data.has(expired),false,"istekla objava se automatski briše")
+ const r=await manageTrees(request("GET"),{store,now}),d=await r.json();assert.equal(r.status,200);assert.equal(d.items.length,1);assert.equal(d.items[0].token,active);assert.equal(d.removedExpired,1);assert.equal(d.totalSize,120);assert.equal(data.has(expired),false,"istekla objava se automatski briše");assert.ok(reads.every(x=>x.consistency==="strong"),"pregled odmah vidi izmene u Blob skladištu")
 }
 {
  const old=data.get(active).expires,r=await manageTrees(request("PATCH",undefined,{token:active,days:30}),{store,now}),d=await r.json();assert.equal(r.status,200);assert.equal(d.expires,old+30*86400000);assert.equal(data.get(active).expires,d.expires)
