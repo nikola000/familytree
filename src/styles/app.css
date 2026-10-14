@@ -4,6 +4,13 @@
 html,body{height:100%;margin:0}
 body{background:var(--bg);color:var(--fg);font:15px/1.3 system-ui,-apple-system,"Segoe UI",sans-serif;display:flex;flex-direction:column}
 [hidden]{display:none!important}
+#onboarding{position:fixed;inset:0;z-index:200;background:rgba(22,31,45,.72);display:flex;align-items:center;justify-content:center;padding:18px;box-sizing:border-box;overflow:auto}
+.onboard-card{width:min(580px,100%);background:var(--card);border:1px solid var(--bd);border-radius:18px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.35);display:flex;flex-direction:column;gap:16px}
+.onboard-brand{color:var(--ac);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.12em}.onboard-card h1{margin:0;font-size:27px}.onboard-lead{margin:0;color:var(--mut)}
+.onboard-choices{display:grid;grid-template-columns:1fr 1fr;gap:10px}.onboard-choice{text-align:left;padding:16px;display:flex;flex-direction:column;gap:6px;min-height:110px}.onboard-choice b{font-size:16px}.onboard-choice span,.onboard-storage span{color:var(--mut);font-size:13px}
+#onboard-form{display:flex;flex-direction:column;gap:12px}#onboard-form label{display:flex;flex:1;flex-direction:column;gap:4px;font-size:13px}#onboard-form input,#onboard-form select{width:100%}#onboard-form fieldset{border:1px solid var(--bd);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px}#onboard-form legend{padding:0 5px;font-weight:600}
+.onboard-storage{padding:12px;border-radius:10px;background:var(--bg);display:flex;flex-direction:column;gap:4px}
+@media(max-width:520px){.onboard-card{padding:18px}.onboard-choices{grid-template-columns:1fr}.onboard-choice{min-height:0}}
 button,select{font:inherit;padding:7px 10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:8px;cursor:pointer}
 button.p{background:var(--ac);color:#fff;border-color:var(--ac)}
 button.d{color:#c0392b}

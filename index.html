@@ -5,6 +5,22 @@
 <!-- DEV:STYLE -->
 <link rel="stylesheet" href="src/styles/app.css">
 <!-- /DEV:STYLE --></head><body>
+<div id="onboarding" hidden role="dialog" aria-modal="true" aria-labelledby="onboard-title">
+<div class="onboard-card">
+<div class="onboard-brand">Rodoslov</div>
+<h1 id="onboard-title">Započni porodično stablo</h1>
+<p class="onboard-lead">Napravi novo stablo unosom prve osobe ili nastavi rad iz JSON rezervne kopije.</p>
+<div id="onboard-choices" class="onboard-choices">
+<button id="onboard-new" class="onboard-choice"><b>Napravi novo stablo</b><span>Unesi prvu osobu i odmah počni da dodaješ porodicu.</span></button>
+<button id="onboard-import" class="onboard-choice"><b>Uvezi postojeće</b><span>Otvori JSON rezervnu kopiju ranije izvezenu iz Rodoslova.</span></button>
+</div>
+<form id="onboard-form" hidden>
+<label>Naziv stabla<input id="onboard-tree-name" type="text" value="Moje porodično stablo" required></label>
+<fieldset><legend>Prva osoba</legend><div class="row"><label>Ime<input id="onboard-first-name" type="text" autocomplete="given-name" required autofocus></label><label>Prezime <small>(opciono)</small><input id="onboard-last-name" type="text" autocomplete="family-name"></label></div><label>Pol <small>(opciono)</small><select id="onboard-sex"><option value="">Nije navedeno</option><option value="m">Muški</option><option value="f">Ženski</option></select></label></fieldset>
+<div class="row"><button type="button" id="onboard-back">Nazad</button><button type="submit" class="p">Napravi stablo</button></div>
+</form>
+<div class="onboard-storage"><b>Gde se čuvaju podaci?</b><span>Automatski u memoriji ovog browsera, na ovom uređaju. Ne šalju se na server. Za sigurnu kopiju povremeno koristi „Izvezi JSON“ — brisanje podataka browsera može ukloniti lokalno stablo.</span></div>
+</div></div>
 <header>
 <button id="hb" aria-label="Meni">☰</button>
 <input id="title" type="text" aria-label="Naslov">

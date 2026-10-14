@@ -50,11 +50,10 @@ npm run check
 
 ## Sledeće faze
 
-1. Onboarding: „Napravi novo stablo“ / „Uvezi postojeće“, ime prve osobe i objašnjenje lokalnog čuvanja.
+1. GEDCOM: prvo dokumentovati podržani podskup, zatim uvoz, test fixtures i izvoz.
 2. Upravljanje deljenjem: automatsko čišćenje isteklih zapisa, produženje roka i pregled prostora; zatim opciona lozinka i QR kod.
-3. GEDCOM: prvo dokumentovati podržani podskup, zatim uvoz, test fixtures i izvoz.
-4. Bogatiji podaci: događaji, izvori, alternativna imena i duplikati.
-5. Nalozi/sinhronizacija samo kao posebna, unapred odobrena promena arhitekture.
+3. Bogatiji podaci: događaji, izvori, alternativna imena i duplikati.
+4. Nalozi/sinhronizacija samo kao posebna, unapred odobrena promena arhitekture.
 
 ## Važne odluke
 
