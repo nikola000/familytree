@@ -1,5 +1,7 @@
 # DEV verzija rodoslova
 
+Kratka pravila za budući rad nalaze se u `AGENTS.md`, a trenutno stanje, arhitektura, odluke i roadmap u `docs/PROJECT_STATE.md`. Time buduće sesije ne moraju da rekonstruišu projekat iz istorije razgovora.
+
 Ovaj folder je modularna razvojna verzija aplikacije. Stabilni `../RSv8.html` se ne menja kada se radi u ovom folderu.
 
 ## Struktura
