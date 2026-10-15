@@ -4,7 +4,7 @@ const READ_ONLY=!!EMB;
 const FL=[["by","born"],["dy","died"],["pl","place"],["sl","slava"],["nt","note"]];
 const yrs=p=>p.by&&p.dy?p.by+"–"+p.dy:p.by||(p.dy?"†"+p.dy:"");
 const GF={"":"#e4e9f0",m:"#d3e4fb",f:"#fbe0ea"};
-const TH={light:{bg:"#ffffff",line:"#333333",grid:"#dddddd",head:"#34507a",cap:"#222222",ring:"#ffffff",cs:"#4a6fa5",pc:["#b5572a","#2a7b5f","#7a3fa0","#2f6fb0","#8a6d00"],cards:false},cards:{bg:"#3a1630",line:"#ead9a6",grid:"#5b2b4b",head:"#d9b45a",cap:"#f6e7c1",ring:"#3a1630",cs:"#c9a24a",pc:["#ffb36b","#ff7a9c","#c9a7ff","#ffd86b","#f08a5d"],cards:true},print:{bg:"#ffffff",line:"#000000",grid:"#cccccc",head:"#000000",cap:"#000000",ring:"#ffffff",cs:"#000000",pc:["#000000","#555555","#888888","#333333","#666666"],cards:false,print:true}};
+const TH={album:{bg:"#fdfaf4",line:"#80664f",grid:"#e9dfd2",head:"#895436",cap:"#342c23",ring:"#fffdf9",cs:"#9b6b4c",pc:["#a65f3d","#537663","#7b5d86","#55738a","#8a713d"],cards:false},light:{bg:"#ffffff",line:"#333333",grid:"#dddddd",head:"#34507a",cap:"#222222",ring:"#ffffff",cs:"#4a6fa5",pc:["#b5572a","#2a7b5f","#7a3fa0","#2f6fb0","#8a6d00"],cards:false},cards:{bg:"#3a1630",line:"#ead9a6",grid:"#5b2b4b",head:"#d9b45a",cap:"#f6e7c1",ring:"#3a1630",cs:"#c9a24a",pc:["#ffb36b","#ff7a9c","#c9a7ff","#ffd86b","#f08a5d"],cards:true},print:{bg:"#ffffff",line:"#000000",grid:"#cccccc",head:"#000000",cap:"#000000",ring:"#ffffff",cs:"#000000",pc:["#000000","#555555","#888888","#333333","#666666"],cards:false,print:true}};
 let hlSet=new Set(),kinFrom=null,linkMode="partner";
 let W=120,H=38,GX=156,GY=56;const PX=24,TOP=62,BOT=64,NEW="Nova osoba";
 let ps=[],U=[],uid=0,title="Moje porodično stablo",sel=null,linkFrom=null,focus=null,zoom=1,stack=[],redo=[],collapsed=new Set();
@@ -75,8 +75,8 @@ function nameLines(name,mw,maxh,base,spc=2){
 const fit=(t,b,mw=104)=>Math.max(8,Math.min(b,Math.floor(mw/(0.6*Math.max(1,t.length)))));
 
 function svg(selId,thOv){
- const K0=TH[thOv||$("th").value]||TH.light;W=K0.cards?84:120;H=K0.cards?116:38;GX=K0.cards?124:156;GY=K0.cards?136:56;
- const K=TH[thOv||$("th").value]||TH.light,yrOn=$("yr").value!=="0",pnOn=$("pn").value==="1",g=gens(),mode=$("sm").value,P=focus!=null?by(focus):null,vw=P?$("vw").value:"all",bk=+$("gb").value,fw=+$("gf").value,minG=P&&(vw==="fam"||vw==="ped")?g[P.id]-bk:-1e9,maxG=P&&(vw==="fam"||vw==="desc")?g[P.id]+fw:1e9;
+ const K0=TH[thOv||$("th").value]||TH.album;W=K0.cards?84:120;H=K0.cards?116:38;GX=K0.cards?124:156;GY=K0.cards?136:56;
+ const K=TH[thOv||$("th").value]||TH.album,yrOn=$("yr").value!=="0",pnOn=$("pn").value==="1",g=gens(),mode=$("sm").value,P=focus!=null?by(focus):null,vw=P?$("vw").value:"all",bk=+$("gb").value,fw=+$("gf").value,minG=P&&(vw==="fam"||vw==="ped")?g[P.id]-bk:-1e9,maxG=P&&(vw==="fam"||vw==="desc")?g[P.id]+fw:1e9;
  let cnt=0,minC=1e9,maxC=-1e9,ov={},claim={};const occ={},recs=[],exp=new Set(),pd=new Set();
  const place=(col,y,h)=>{y=Math.max(0,y);minC=Math.min(minC,col);maxC=Math.max(maxC,col);const L=occ[col]||(occ[col]=[]);for(let go=true;go;){go=false;for(const[a,b]of L)if(y<b-1e-6&&y+h>a+1e-6){y=b;go=true}}L.push([y,y+h]);cnt=Math.max(cnt,y+h);return y};
  const rankCache=new Map(),branchRank=p=>{if(rankCache.has(p.id))return rankCache.get(p.id);let depth=0,count=0,q=[[p,0]],seen=new Set([p.id]);while(q.length){const[x,d]=q.shift();depth=Math.max(depth,d);for(const c of kids(x.id))if(!seen.has(c.id)){seen.add(c.id);count++;q.push([c,d+1])}}const r={depth,count};rankCache.set(p.id,r);return r};

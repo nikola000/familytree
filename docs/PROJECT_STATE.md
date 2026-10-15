@@ -24,7 +24,7 @@ Kod je modularan po fajlovima, ali browser moduli namerno dele globalno stanje. 
 ## Trenutno ponašanje
 
 - JSON format je verzija 3 sa eksplicitnim roditeljima; v2 se migrira.
-- Nova instalacija prikazuje izbor novog stabla ili JSON uvoza, unos prve osobe i objašnjenje lokalnog čuvanja; početna tema je svetla.
+- Nova instalacija prikazuje izbor novog stabla ili JSON uvoza, unos prve osobe i objašnjenje lokalnog čuvanja; početna tema je „Porodični album“, dok je prethodna svetla tema dostupna kao „Klasična“.
 - Postojeća stabla, tema i verzije ostaju u `localStorage` konkretnog origin-a/browsera.
 - Pretraga imena i prezimena radi između srpske ćirilice i latinice, uključujući česte oblike bez dijakritike; rezultati se mogu birati strelicama i tasterom Enter.
 - Podeljeni link je read-only. Dugme „Sačuvaj u moja stabla“ pravi nezavisnu lokalnu kopiju i sprečava ponovni uvoz istog linka.

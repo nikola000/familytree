@@ -8,7 +8,7 @@ function focusedFamily(rootId,back,forward){
  return{root,anc,desc,ids}
 }
 const focusDepth=(id,fallback,max)=>{const v=+$(id).value;return v===99?fallback:Math.max(0,Math.min(max,v))};
-const focusTheme=th=>TH[th||$("th").value]||TH.light;
+const focusTheme=th=>TH[th||$("th").value]||TH.album;
 const focusedLabel=p=>nm(p)+(effS(p)?" "+effS(p):"");
 function routeFamilyLanes(plans){const bands=new Map();for(const p of plans){const k=p.minTop.toFixed(2),a=bands.get(k)||[];a.push(p);bands.set(k,a)}for(const a of bands.values()){const starts=[];a.sort((x,y)=>y.hi-x.hi||y.lo-x.lo).forEach(p=>{let lane=starts.findIndex(x=>p.hi<x-12);if(lane<0)lane=starts.length;starts[lane]=p.lo;p.lane=lane});for(const p of a)p.lanes=starts.length}return plans}
 function focusCard(p,x,y,K,selected,kind="person"){

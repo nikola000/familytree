@@ -24,6 +24,7 @@ function app(options={}){
  const source=options.embed?html.replace("<script>",`<script id="embed">const EMBED=${JSON.stringify(options.embed)};</script><script>`):html;
  return new JSDOM(source,{runScripts:"dangerously",url:"https://example.test/",pretendToBeVisual:true,virtualConsole:quiet,beforeParse(window){
   if(options.data){const id="test-tree";window.localStorage.setItem("rodoslov:registry",JSON.stringify([{id,name:options.data.title,created:1,updated:1,count:options.data.persons.length}]));window.localStorage.setItem("rodoslov:active",id);window.localStorage.setItem("rodoslov:tree:"+id,JSON.stringify(options.data))}
+  if(options.theme)window.localStorage.setItem("rodoslov_theme",options.theme);
   if(options.net){window.localStorage.setItem("rodoslov:netlify:url","https://trees.test");window.sessionStorage.setItem("rodoslov:netlify:admin","test-key");window.fetch=options.net}
   if(options.share){window.navigator.share=options.share;window.navigator.canShare=()=>true}
  }});
@@ -32,8 +33,10 @@ function app(options={}){
 {
  const dom=app(),d=dom.window.document;
  assert.equal(d.querySelector("#title").value,"Moje porodično stablo");
- assert.equal(d.querySelector("#th").value,"light");
- assert.equal(d.documentElement.dataset.th,"light");
+ assert.equal(d.querySelector("#th").value,"album");
+ assert.equal(d.documentElement.dataset.th,"album");
+ assert.equal(d.querySelector('#th option[value="light"]').textContent,"Klasi\u010dna");
+ assert.equal(d.querySelectorAll('.theme-choices input[name="th-ui"]').length,4);
  assert.equal(d.querySelectorAll("#wrap [data-id]").length,1);
  assert.equal(d.querySelector("#onboarding").hidden,false);
  assert.equal(d.querySelector("#onboard-step").textContent,"Početak");
@@ -46,9 +49,16 @@ function app(options={}){
  assert.match(html,/function seed\(\)\{ps=\[\];U=\[\];uid=0;title="Moje porodično stablo";mkp\(NEW\)/);
  d.querySelector("#onboard-new").click();assert.equal(d.querySelector("#onboard-step").textContent,"Prva osoba");d.querySelector("#onboard-first-name").value="Milena";d.querySelector("#onboard-last-name").value="Jovanović";d.querySelector("#onboard-sex").value="f";d.querySelector("#onboard-form").dispatchEvent(new dom.window.Event("submit",{bubbles:true,cancelable:true}));
  assert.equal(d.querySelector("#onboarding").hidden,true);const saved=JSON.parse(dom.window.localStorage.getItem("rodoslov:tree:"+dom.window.localStorage.getItem("rodoslov:active")));assert.equal(saved.persons[0].name,"Milena");assert.equal(saved.persons[0].surname,"Jovanović");assert.equal(saved.persons[0].sex,"f");
- const theme=d.querySelector("#th");theme.value="cards";theme.dispatchEvent(new dom.window.Event("change",{bubbles:true}));assert.equal(d.documentElement.dataset.th,"cards");theme.value="light";theme.dispatchEvent(new dom.window.Event("change",{bubbles:true}));assert.equal(d.documentElement.dataset.th,"light");
+ const theme=d.querySelector("#th");theme.value="cards";theme.dispatchEvent(new dom.window.Event("change",{bubbles:true}));assert.equal(d.documentElement.dataset.th,"cards");theme.value="light";theme.dispatchEvent(new dom.window.Event("change",{bubbles:true}));assert.equal(d.documentElement.dataset.th,"light");theme.value="album";theme.dispatchEvent(new dom.window.Event("change",{bubbles:true}));assert.equal(d.documentElement.dataset.th,"album");
  const pdf=dom.window.jpegPdfDocument(Uint8Array.from([255,216,255,217]),10,10,841.89,595.28);const pdfText=Buffer.from(pdf).toString("latin1");assert.match(pdfText,/^%PDF-1\.4/);assert.match(pdfText,/\/Subtype \/Image/);assert.match(pdfText,/xref\n/);
  d.querySelector("#dimp").click();assert.equal(d.querySelector("#modal").hidden,false);assert.equal(d.querySelector("#modal").getAttribute("aria-modal"),"true");d.querySelector("#mclose").click();assert.equal(d.querySelector("#modal").hidden,true);
+ dom.window.close();
+}
+
+{
+ const dom=app({theme:"light"}),d=dom.window.document;
+ assert.equal(d.querySelector("#th").value,"light","postojeÄ‡i izbor klasiÄne teme ostaje saÄuvan");
+ assert.equal(d.documentElement.dataset.th,"light");
  dom.window.close();
 }
 

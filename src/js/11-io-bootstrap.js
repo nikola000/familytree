@@ -51,7 +51,7 @@ $("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileR
 
 let needsOnboarding=false;
 try{needsOnboarding=!EMB&&(!readTreeRegistry().length&&!localStorage.getItem(SKEY)||localStorage.getItem(ONBOARDING_PENDING_KEY)==="1");if(needsOnboarding)localStorage.setItem(ONBOARDING_PENDING_KEY,"1");initTreeLibrary();const s=localStorage.getItem(activeDataKey());if(s)load(s);else if(EMB)load(JSON.stringify(EMB.data));else seed()}catch(e){try{if(EMB)load(JSON.stringify(EMB.data));else seed()}catch(_){seed()}}
-let th0="light";try{th0=localStorage.getItem("rodoslov_theme")||"light"}catch(e){}
+let th0="album";try{th0=localStorage.getItem("rodoslov_theme")||"album"}catch(e){}
 $("th").value=th0;setTheme(th0);
 $("title").value=title;updBk();if(READ_ONLY){document.documentElement.dataset.shared="readonly";$("title").readOnly=true;for(const id of["undo","redo","dimp","dshare","dnet","dvers","vshare","bk"])$(id).hidden=true}render();save();updateSharedCopyBar();if(needsOnboarding)showOnboarding();
 
