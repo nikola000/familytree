@@ -1,6 +1,6 @@
 # Stanje projekta
 
-Poslednje ažuriranje: 14. oktobar 2026.
+Poslednje ažuriranje: 15. oktobar 2026.
 
 ## Cilj
 
@@ -30,6 +30,7 @@ Kod je modularan po fajlovima, ali browser moduli namerno dele globalno stanje. 
 - Podeljeni link je read-only. Dugme „Sačuvaj u moja stabla“ pravi nezavisnu lokalnu kopiju i sprečava ponovni uvoz istog linka.
 - Fokusirani SVG prikazi „Peščani sat“ i „Lepeza predaka“ koriste izabranu osobu kao centar, imaju ograničenje generacija, zoom/pan i rade i u read-only podeljenom prikazu. Peščani sat objedinjuje roditeljski par u jednu obojenu porodičnu granu ka zajedničkoj deci; centar lepeze je unutrašnji polukružni segment iste geometrije kao prstenovi.
 - JSON v3 opciono čuva alternativna imena u `aliases`; ona ulaze u pretragu i deljene kopije. Redosled partnera prati ručno promenljiv redosled postojećeg `unions` niza.
+- GEDCOM uvoz prihvata tekstualne 5.5, 5.5.1 i 7.x UTF-8 fajlove, a izvoz pravi široko kompatibilan GEDCOM 5.5.1 UTF-8. Podržani podskup i svesna ograničenja su u `docs/GEDCOM.md`; JSON ostaje potpuna rezervna kopija.
 - Dijalog deljenja pre objave prikazuje pregled verovatno živih osoba i tačno opisuje koje godine, mesta i napomene će biti izostavljene.
 - Ručno spajanje duplikata čuva jedinstvene podatke i veze, nudi izbor konfliktnih polja, pravi prethodnu verziju i blokira rizična spajanja predaka, partnera ili više od dva roditelja.
 - Netlify objave zahtevaju `RODOSLOV_ADMIN_KEY`, ograničene su na 2 MB i najviše 365 dana. Ključ može važiti samo tokom sesije ili, uz izričit izbor, ostati u lokalnom skladištu tog uređaja; nikada ne ulazi u deljeni link. Upravljački pregled prikazuje prostor i rokove, omogućava otvaranje, sistemsko deljenje, kopiranje, QR kod, produženje i povlačenje linka; istekli zapisi se čiste pri otvaranju pregleda.
@@ -56,9 +57,9 @@ npm run check
 
 ## Sledeće faze
 
-1. GEDCOM: prvo dokumentovati podržani podskup, zatim uvoz, test fixtures i izvoz.
+1. GEDCOM: opciono dodati ANSEL/GEDZIP i bogatiji model događaja/izvora.
 2. Deljenje: opciona zaštita linka lozinkom.
-3. Bogatiji podaci: događaji, izvori, alternativna imena i duplikati.
+3. Bogatiji podaci: događaji, izvori i citati.
 4. Nalozi/sinhronizacija samo kao posebna, unapred odobrena promena arhitekture.
 
 ## Važne odluke

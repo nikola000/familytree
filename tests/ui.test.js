@@ -24,6 +24,8 @@ function app(options={}){
  assert.equal(d.querySelectorAll("#wrap [data-id]").length,1);
  assert.equal(d.querySelector("#onboarding").hidden,false);
  assert.match(d.querySelector(".onboard-storage").textContent,/ovog browsera/);
+ assert.match(d.querySelector("#onboard-import").textContent,/GEDCOM/);
+ assert.ok(d.querySelector("#dg"),"meni nudi GEDCOM izvoz");
  assert.match(html,/function seed\(\)\{ps=\[\];U=\[\];uid=0;title="Moje porodično stablo";mkp\(NEW\)/);
  d.querySelector("#onboard-new").click();d.querySelector("#onboard-first-name").value="Milena";d.querySelector("#onboard-last-name").value="Jovanović";d.querySelector("#onboard-sex").value="f";d.querySelector("#onboard-form").dispatchEvent(new dom.window.Event("submit",{bubbles:true,cancelable:true}));
  assert.equal(d.querySelector("#onboarding").hidden,true);const saved=JSON.parse(dom.window.localStorage.getItem("rodoslov:tree:"+dom.window.localStorage.getItem("rodoslov:active")));assert.equal(saved.persons[0].name,"Milena");assert.equal(saved.persons[0].surname,"Jovanović");assert.equal(saved.persons[0].sex,"f");

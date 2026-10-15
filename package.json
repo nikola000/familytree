@@ -4,7 +4,7 @@
   "version": "1.0.0",
   "scripts": {
     "build": "node tools/build.mjs",
-    "test": "node tests/family-data.test.js && node tests/ui.test.js && node tests/netlify-functions.test.mjs",
+    "test": "node tests/family-data.test.js && node tests/gedcom.test.js && node tests/ui.test.js && node tests/netlify-functions.test.mjs",
     "check": "npm run build && npm run test"
   },
   "dependencies": {
