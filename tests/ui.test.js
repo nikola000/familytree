@@ -8,11 +8,13 @@ const html=fs.readFileSync(path.join(root,"dist","index.html"),"utf8");
 const manifest=JSON.parse(fs.readFileSync(path.join(root,"dist","manifest.json"),"utf8"));
 const serviceWorker=fs.readFileSync(path.join(root,"dist","sw.js"),"utf8");
 const installIcon=fs.readFileSync(path.join(root,"dist","pwa-icon-512.png"));
+const maskableIcon=fs.readFileSync(path.join(root,"dist","pwa-maskable-512.png"));
 const quiet=new VirtualConsole();
 
 assert.equal(manifest.display,"standalone");
-assert.ok(manifest.icons.some(x=>x.purpose.includes("maskable")),"PWA ima maskable ikonu");
+assert.deepEqual(manifest.icons.map(x=>[x.src,x.sizes,x.purpose]),[["/pwa-icon-192.png","192x192","any"],["/pwa-icon-512.png","512x512","any"],["/pwa-maskable-512.png","512x512","maskable"]]);
 assert.equal(installIcon.readUInt32BE(16),512,"build pravi PNG ikonu za instalaciju");
+assert.equal(maskableIcon.readUInt32BE(16),512,"build kopira posebnu maskable ikonu");
 assert.match(serviceWorker,/rodoslov-[a-f0-9]{12}/,"build upisuje verzionisan offline cache");
 assert.match(serviceWorker,/pathname\.startsWith\("\/s\/"\)/,"deljeni linkovi se ne kesiraju kao lokalna aplikacija");
 

@@ -7,27 +7,27 @@
   "scope": "/",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#f5f6f8",
-  "theme_color": "#2f5d9e",
+  "background_color": "#f9e9ca",
+  "theme_color": "#2f5d40",
   "categories": ["family", "utilities"],
   "icons": [
     {
-      "src": "pwa-icon-192.png",
+      "src": "/pwa-icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any"
     },
     {
-      "src": "pwa-icon-512.png",
+      "src": "/pwa-icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
-      "src": "pwa-icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "src": "/pwa-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
     }
   ]
 }

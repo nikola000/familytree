@@ -1,5 +1,5 @@
 const CACHE="rodoslov-__CACHE_VERSION__";
-const APP_SHELL=["/","/index.html","/manifest.json","/pwa-icon.svg","/pwa-icon-192.png","/pwa-icon-512.png"];
+const APP_SHELL=["/","/index.html","/manifest.json","/favicon-32.png","/apple-touch-icon.png","/pwa-icon-192.png","/pwa-icon-512.png","/pwa-maskable-512.png"];
 
 self.addEventListener("install",event=>{
  event.waitUntil(caches.open(CACHE).then(cache=>cache.addAll(APP_SHELL)).then(()=>self.skipWaiting()));
