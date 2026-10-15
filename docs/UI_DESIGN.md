@@ -33,6 +33,7 @@ Redosled se uređuje u jednom dijalogu sa pregledom braće/sestara i partnera. S
 ## Veze u peščanom satu
 
 - Dva prikazana roditelja povezuju se kao roditeljski par, a iz sredine njihove veze izlazi jedna zajednička grana koja se račva ka zajedničkoj deci.
+- Veza roditeljskog para sa jednim prikazanim detetom koristi zasebnu glatku putanju, bez nepotrebne horizontalne sabirnice. Sabirnice se koriste samo za stvarno grananje ka više zajedničke dece, a njihovi preklopljeni rasponi dobijaju odvojene koridore ispod kartica. Tanka pozadinska kontura čuva razdvajanje i na neizbežnim ukrštanjima.
 - Svako partnerstvo koristi svoju diskretnu boju za partnersku liniju, porodični čvor i grane dece; struktura ostaje razumljiva i bez boje.
 - Kada je prikazan samo jedan eksplicitni roditelj, dete dobija jednu neutralnu direktnu porodičnu granu. Prikaz nikada ne izvodi roditeljstvo iz samog partnerstva.
 
