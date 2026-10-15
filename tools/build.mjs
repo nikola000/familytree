@@ -32,7 +32,7 @@ const dist=join(root,"dist");await mkdir(dist,{recursive:true});
 await Promise.all([
  writeFile(join(dist,"index.html"),output,"utf8"),
  writeFile(join(dist,"RSv9-dev.html"),output,"utf8"),
- writeFile(join(dist,"manifest.webmanifest"),manifest,"utf8"),
+ writeFile(join(dist,"manifest.json"),manifest,"utf8"),
  writeFile(join(dist,"pwa-icon.svg"),icon,"utf8"),
  writeFile(join(dist,"pwa-icon-192.png"),appIcon(192)),
  writeFile(join(dist,"pwa-icon-512.png"),appIcon(512)),

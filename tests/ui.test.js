@@ -5,7 +5,7 @@ const {JSDOM,VirtualConsole}=require("jsdom");
 
 const root=path.resolve(__dirname,"..");
 const html=fs.readFileSync(path.join(root,"dist","index.html"),"utf8");
-const manifest=JSON.parse(fs.readFileSync(path.join(root,"dist","manifest.webmanifest"),"utf8"));
+const manifest=JSON.parse(fs.readFileSync(path.join(root,"dist","manifest.json"),"utf8"));
 const serviceWorker=fs.readFileSync(path.join(root,"dist","sw.js"),"utf8");
 const installIcon=fs.readFileSync(path.join(root,"dist","pwa-icon-512.png"));
 const quiet=new VirtualConsole();
@@ -38,7 +38,7 @@ function app(options={}){
  assert.ok(d.querySelector("#dg"),"meni nudi GEDCOM izvoz");
  assert.ok(d.querySelector("#dpdf"),"meni nudi direktan PDF izvoz");
  assert.ok(d.querySelector("#dpwa"),"meni nudi instalaciju aplikacije");
- assert.equal(d.querySelector('link[rel="manifest"]').getAttribute("href"),"manifest.webmanifest");
+ assert.equal(d.querySelector('link[rel="manifest"]').getAttribute("href"),"manifest.json");
  assert.match(html,/function seed\(\)\{ps=\[\];U=\[\];uid=0;title="Moje porodično stablo";mkp\(NEW\)/);
  d.querySelector("#onboard-new").click();assert.equal(d.querySelector("#onboard-step").textContent,"Prva osoba");d.querySelector("#onboard-first-name").value="Milena";d.querySelector("#onboard-last-name").value="Jovanović";d.querySelector("#onboard-sex").value="f";d.querySelector("#onboard-form").dispatchEvent(new dom.window.Event("submit",{bubbles:true,cancelable:true}));
  assert.equal(d.querySelector("#onboarding").hidden,true);const saved=JSON.parse(dom.window.localStorage.getItem("rodoslov:tree:"+dom.window.localStorage.getItem("rodoslov:active")));assert.equal(saved.persons[0].name,"Milena");assert.equal(saved.persons[0].surname,"Jovanović");assert.equal(saved.persons[0].sex,"f");
