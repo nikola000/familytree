@@ -28,7 +28,7 @@ Kod je modularan po fajlovima, ali browser moduli namerno dele globalno stanje. 
 - Postojeća stabla, tema i verzije ostaju u `localStorage` konkretnog origin-a/browsera.
 - Pretraga imena i prezimena radi između srpske ćirilice i latinice, uključujući česte oblike bez dijakritike; rezultati se mogu birati strelicama i tasterom Enter.
 - Podeljeni link je read-only. Dugme „Sačuvaj u moja stabla“ pravi nezavisnu lokalnu kopiju i sprečava ponovni uvoz istog linka.
-- Fokusirani SVG prikazi „Peščani sat“ i „Lepeza predaka“ koriste izabranu osobu kao centar, imaju ograničenje generacija, zoom/pan i rade i u read-only podeljenom prikazu. Centar lepeze je unutrašnji polukružni segment iste geometrije kao prstenovi.
+- Fokusirani SVG prikazi „Peščani sat“ i „Lepeza predaka“ koriste izabranu osobu kao centar, imaju ograničenje generacija, zoom/pan i rade i u read-only podeljenom prikazu. Peščani sat objedinjuje roditeljski par u jednu obojenu porodičnu granu ka zajedničkoj deci; centar lepeze je unutrašnji polukružni segment iste geometrije kao prstenovi.
 - JSON v3 opciono čuva alternativna imena u `aliases`; ona ulaze u pretragu i deljene kopije. Redosled partnera prati ručno promenljiv redosled postojećeg `unions` niza.
 - Dijalog deljenja pre objave prikazuje pregled verovatno živih osoba i tačno opisuje koje godine, mesta i napomene će biti izostavljene.
 - Ručno spajanje duplikata čuva jedinstvene podatke i veze, nudi izbor konfliktnih polja, pravi prethodnu verziju i blokira rizična spajanja predaka, partnera ili više od dva roditelja.

@@ -57,13 +57,14 @@ function app(options={}){
 {
  const data={title:"Fokus",version:3,persons:[
   {id:1,name:"Root",parents:[2]},{id:2,name:"Parent",surname:"Family",parents:[4]},{id:3,name:"Partner"},{id:4,name:"Grandparent"},
-  {id:5,name:"Child",parents:[1,3]},{id:6,name:"Grandchild",parents:[5]},{id:7,name:"Sibling",parents:[2]},{id:8,name:"Unrelated"}
+  {id:5,name:"Child",parents:[1,3]},{id:6,name:"Grandchild",parents:[5]},{id:7,name:"Sibling",parents:[2]},{id:8,name:"Unrelated"},{id:9,name:"Second child",parents:[1,3]}
  ],unions:[[1,3]]},dom=app({data}),d=dom.window.document;
  d.querySelector('#wrap [data-id="1"]').dispatchEvent(new dom.window.MouseEvent("click",{bubbles:true}));
  const view=d.querySelector("#vw");view.value="hourglass";view.dispatchEvent(new dom.window.Event("change",{bubbles:true}));
  assert.equal(d.querySelector("#wrap svg").dataset.view,"hourglass");
  assert.ok(d.querySelector('#wrap [data-id="1"]'),"fokusna osoba je prikazana");
  assert.ok(d.querySelector('#wrap [data-id="3"]'),"partner fokusne osobe je prikazan");
+ const family=d.querySelector('#wrap [data-parent-set="1:3"]');assert.ok(family,"zajednička deca koriste porodični čvor");assert.equal(family.querySelectorAll("[data-family-trunk]").length,1,"roditeljski par ima jednu zajedničku granu");assert.equal(family.querySelectorAll("[data-family-branch]").length,2,"zajednička grana se račva ka oba deteta");
  assert.equal(d.querySelector('#wrap [data-id="7"]'),null,"bočna grana pretka nije prikazana");
  assert.equal(d.querySelector('#wrap [data-id="8"]'),null,"nepovezana osoba nije prikazana");
  d.querySelector("#gb").value="1";d.querySelector("#gf").value="1";d.querySelector("#gf").dispatchEvent(new dom.window.Event("change",{bubbles:true}));

@@ -30,6 +30,12 @@ Redosled se uređuje u jednom dijalogu sa pregledom braće/sestara i partnera. S
 - Izabrana osoba zauzima unutrašnji polukružni segment lepeze, umesto zasebne pravougaone kartice, tako da svi nivoi čine jednu mirnu geometrijsku celinu.
 - Poznati preci u lepezi prikazuju ime i prezime u odvojenim redovima; svaki red se zasebno skraćuje i ostaje unutar svog segmenta.
 
+## Veze u peščanom satu
+
+- Dva prikazana roditelja povezuju se kao roditeljski par, a iz sredine njihove veze izlazi jedna zajednička grana koja se račva ka zajedničkoj deci.
+- Svako partnerstvo koristi svoju diskretnu boju za partnersku liniju, porodični čvor i grane dece; struktura ostaje razumljiva i bez boje.
+- Kada je prikazan samo jedan eksplicitni roditelj, dete dobija jednu neutralnu direktnu porodičnu granu. Prikaz nikada ne izvodi roditeljstvo iz samog partnerstva.
+
 ## Deljenje i pomoćne alatke
 
 - Deljenje je istaknuta akcija, sa Netlify linkom kao prvim odredištem.
