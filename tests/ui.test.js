@@ -5,7 +5,16 @@ const {JSDOM,VirtualConsole}=require("jsdom");
 
 const root=path.resolve(__dirname,"..");
 const html=fs.readFileSync(path.join(root,"dist","index.html"),"utf8");
+const manifest=JSON.parse(fs.readFileSync(path.join(root,"dist","manifest.webmanifest"),"utf8"));
+const serviceWorker=fs.readFileSync(path.join(root,"dist","sw.js"),"utf8");
+const installIcon=fs.readFileSync(path.join(root,"dist","pwa-icon-512.png"));
 const quiet=new VirtualConsole();
+
+assert.equal(manifest.display,"standalone");
+assert.ok(manifest.icons.some(x=>x.purpose.includes("maskable")),"PWA ima maskable ikonu");
+assert.equal(installIcon.readUInt32BE(16),512,"build pravi PNG ikonu za instalaciju");
+assert.match(serviceWorker,/rodoslov-[a-f0-9]{12}/,"build upisuje verzionisan offline cache");
+assert.match(serviceWorker,/pathname\.startsWith\("\/s\/"\)/,"deljeni linkovi se ne kesiraju kao lokalna aplikacija");
 
 function app(options={}){
  const source=options.embed?html.replace("<script>",`<script id="embed">const EMBED=${JSON.stringify(options.embed)};</script><script>`):html;
@@ -23,13 +32,19 @@ function app(options={}){
  assert.equal(d.documentElement.dataset.th,"light");
  assert.equal(d.querySelectorAll("#wrap [data-id]").length,1);
  assert.equal(d.querySelector("#onboarding").hidden,false);
+ assert.equal(d.querySelector("#onboard-step").textContent,"Početak");
  assert.match(d.querySelector(".onboard-storage").textContent,/ovog browsera/);
  assert.match(d.querySelector("#onboard-import").textContent,/GEDCOM/);
  assert.ok(d.querySelector("#dg"),"meni nudi GEDCOM izvoz");
+ assert.ok(d.querySelector("#dpdf"),"meni nudi direktan PDF izvoz");
+ assert.ok(d.querySelector("#dpwa"),"meni nudi instalaciju aplikacije");
+ assert.equal(d.querySelector('link[rel="manifest"]').getAttribute("href"),"manifest.webmanifest");
  assert.match(html,/function seed\(\)\{ps=\[\];U=\[\];uid=0;title="Moje porodično stablo";mkp\(NEW\)/);
- d.querySelector("#onboard-new").click();d.querySelector("#onboard-first-name").value="Milena";d.querySelector("#onboard-last-name").value="Jovanović";d.querySelector("#onboard-sex").value="f";d.querySelector("#onboard-form").dispatchEvent(new dom.window.Event("submit",{bubbles:true,cancelable:true}));
+ d.querySelector("#onboard-new").click();assert.equal(d.querySelector("#onboard-step").textContent,"Prva osoba");d.querySelector("#onboard-first-name").value="Milena";d.querySelector("#onboard-last-name").value="Jovanović";d.querySelector("#onboard-sex").value="f";d.querySelector("#onboard-form").dispatchEvent(new dom.window.Event("submit",{bubbles:true,cancelable:true}));
  assert.equal(d.querySelector("#onboarding").hidden,true);const saved=JSON.parse(dom.window.localStorage.getItem("rodoslov:tree:"+dom.window.localStorage.getItem("rodoslov:active")));assert.equal(saved.persons[0].name,"Milena");assert.equal(saved.persons[0].surname,"Jovanović");assert.equal(saved.persons[0].sex,"f");
  const theme=d.querySelector("#th");theme.value="cards";theme.dispatchEvent(new dom.window.Event("change",{bubbles:true}));assert.equal(d.documentElement.dataset.th,"cards");theme.value="light";theme.dispatchEvent(new dom.window.Event("change",{bubbles:true}));assert.equal(d.documentElement.dataset.th,"light");
+ const pdf=dom.window.jpegPdfDocument(Uint8Array.from([255,216,255,217]),10,10,841.89,595.28);const pdfText=Buffer.from(pdf).toString("latin1");assert.match(pdfText,/^%PDF-1\.4/);assert.match(pdfText,/\/Subtype \/Image/);assert.match(pdfText,/xref\n/);
+ d.querySelector("#dimp").click();assert.equal(d.querySelector("#modal").hidden,false);assert.equal(d.querySelector("#modal").getAttribute("aria-modal"),"true");d.querySelector("#mclose").click();assert.equal(d.querySelector("#modal").hidden,true);
  dom.window.close();
 }
 

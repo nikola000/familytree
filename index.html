@@ -1,6 +1,13 @@
 ﻿<!DOCTYPE html>
 <html lang="sr"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f5f6f8">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Rodoslov">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="pwa-icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="pwa-icon-192.png">
 <title>Uređivač rodoslova</title>
 <!-- DEV:STYLE -->
 <link rel="stylesheet" href="src/styles/app.css">
@@ -18,14 +25,16 @@
 </defs></svg>
 <div id="onboarding" hidden role="dialog" aria-modal="true" aria-labelledby="onboard-title">
 <div class="onboard-card">
-<div class="onboard-brand">Rodoslov</div>
+<div class="onboard-top"><div class="onboard-brand">Rodoslov</div><span id="onboard-step">Početak</span></div>
 <h1 id="onboard-title">Započni porodično stablo</h1>
 <p class="onboard-lead">Napravi novo stablo unosom prve osobe ili nastavi rad uvozom JSON/GEDCOM fajla.</p>
+<div class="onboard-benefits" aria-label="Prednosti"><span>✓ Čuva se na uređaju</span><span>✓ Radi bez interneta</span><span>✓ Bez obaveznog naloga</span></div>
 <div id="onboard-choices" class="onboard-choices">
-<button id="onboard-new" class="onboard-choice"><b>Napravi novo stablo</b><span>Unesi prvu osobu i odmah počni da dodaješ porodicu.</span></button>
-<button id="onboard-import" class="onboard-choice"><b>Uvezi postojeće</b><span>Otvori JSON rezervnu kopiju ili GEDCOM fajl iz druge aplikacije.</span></button>
+<button id="onboard-new" class="onboard-choice"><i aria-hidden="true">＋</i><b>Napravi novo stablo</b><span>Unesi prvu osobu i odmah počni da dodaješ porodicu.</span></button>
+<button id="onboard-import" class="onboard-choice"><i aria-hidden="true">⇧</i><b>Uvezi postojeće</b><span>Otvori JSON rezervnu kopiju ili GEDCOM fajl iz druge aplikacije.</span></button>
 </div>
 <form id="onboard-form" hidden>
+<p class="onboard-form-intro">Najpre unesi osobu od koje želiš da započneš. Roditelje, partnera i decu možeš dodati odmah zatim.</p>
 <label>Naziv stabla<input id="onboard-tree-name" type="text" value="Moje porodično stablo" required></label>
 <fieldset><legend>Prva osoba</legend><div class="row"><label>Ime<input id="onboard-first-name" type="text" autocomplete="given-name" required autofocus></label><label>Prezime <small>(opciono)</small><input id="onboard-last-name" type="text" autocomplete="family-name"></label></div><label>Pol <small>(opciono)</small><select id="onboard-sex"><option value="">Nije navedeno</option><option value="m">Muški</option><option value="f">Ženski</option></select></label></fieldset>
 <div class="row"><button type="button" id="onboard-back">Nazad</button><button type="submit" class="p">Napravi stablo</button></div>
@@ -71,11 +80,12 @@
 <h3>Deljenje</h3>
 <button id="dshare" class="drawer-primary"><svg class="ico"><use href="#i-share"/></svg>Podeli stablo…</button><button id="dnet">Upravljaj Netlify objavama…</button><p>Prva opcija pravi vremenski ograničen Netlify link koji zatim možeš poslati kroz aplikacije na telefonu.</p>
 <details class="drawer-section"><summary>Fajl i izvoz</summary><div class="drawer-actions"><button id="dimp">Uvezi JSON / GEDCOM</button><button id="dj">Izvezi JSON (rezervna kopija)</button><button id="dg">Izvezi GEDCOM</button><button id="di">Izvezi sliku (PNG)</button><button id="dc">Izvezi tabelu (CSV)</button></div></details>
-<details class="drawer-section"><summary>Štampa i provera</summary><div class="drawer-actions"><button id="dprint">Štampaj…</button><button id="dps">Izvezi SVG za štampu</button><button id="dpp">Izvezi PNG za štampu (4x)</button><button id="dchk">Provera grešaka…</button></div></details>
+<details class="drawer-section"><summary>Štampa i provera</summary><div class="drawer-actions"><button id="dpdf">Izvezi PDF…</button><button id="dprint">Štampaj…</button><button id="dps">Izvezi SVG za štampu</button><button id="dpp">Izvezi PNG za štampu (4x)</button><button id="dchk">Provera grešaka…</button></div></details>
+<h3>Aplikacija</h3><button id="dpwa">Instaliraj aplikaciju…</button><p id="pwa-status">Aplikacija priprema podršku za rad bez interneta.</p>
 <h3>Stabla i rezervne kopije</h3><button id="dvers">Stabla i prostor…</button><p id="bkinfo"></p>
 <h3>Legenda</h3><p>„↑" na kartici: potomci su prikazani na drugom mestu. „+N": skupljeni potomci. Boje veza: svaki brak ima svoju boju. Tekst posle „|" u imenu piše ispod kartice (npr. Ime|napomena…). Ctrl + točkić: zoom.</p>
 </aside>
-<div id="modal" hidden><div id="mbox"><h3 id="mt"></h3><div id="mb"></div><div class="row"><button id="mok" class="p">Sačuvaj</button><button id="mno">Otkaži</button></div></div></div>
+<div id="modal" hidden role="dialog" aria-modal="true" aria-labelledby="mt"><div id="mbox"><div class="modal-head"><h3 id="mt"></h3><button id="mclose" class="icon-only" type="button" aria-label="Zatvori dijalog">✕</button></div><div id="mb"></div><div class="modal-actions"><button id="mno" type="button">Otkaži</button><button id="mok" class="p" type="button">Sačuvaj</button></div></div></div>
 <input id="file" type="file" accept=".json,.ged,.gedcom,application/json,text/plain" hidden>
 <!-- DEV:SCRIPTS -->
 <script src="src/js/00-family-data.js"></script>

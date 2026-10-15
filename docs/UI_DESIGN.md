@@ -66,8 +66,9 @@ Osnovni interfejs koristi sistemski varijabilni sans-serif (`Segoe UI Variable T
 
 ## Sledeći UI zahvati
 
-1. Dosledno primeniti isti sistem kontrola u onboarding, deljenje i Netlify dijalozima.
-2. Dodati opcionu kompaktnu gustinu za velike ekrane.
-3. Uskladiti tabelu sa novim ikonama i jasnijim bulk toolbarom.
-4. Dodati testove tastaturne navigacije kroz sve popup menije.
-5. Posle stabilizacije izdvojiti zajedničke funkcije za dugmad, menije i SVG ikone, bez uvođenja frameworka.
+Onboarding i modalni dijalozi sada dele isti vizuelni sistem, responzivni raspored, vidljivo zatvaranje i vraćanje fokusa.
+
+1. Dodati opcionu kompaktnu gustinu za velike ekrane.
+2. Uskladiti tabelu sa novim ikonama i jasnijim bulk toolbarom.
+3. Dodati testove tastaturne navigacije kroz sve popup menije.
+4. Posle stabilizacije izdvojiti zajedničke funkcije za dugmad, menije i SVG ikone, bez uvođenja frameworka.

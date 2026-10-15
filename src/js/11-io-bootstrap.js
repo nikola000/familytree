@@ -29,9 +29,9 @@ const ONBOARDING_PENDING_KEY="rodoslov:onboarding-pending";
 let onboardingImport=false;
 function finishOnboarding(){localStorage.removeItem(ONBOARDING_PENDING_KEY);$("onboarding").hidden=true}
 function showOnboarding(){
- $("onboarding").hidden=false;$("onboard-choices").hidden=false;$("onboard-form").hidden=true;
- $("onboard-new").onclick=()=>{$("onboard-choices").hidden=true;$("onboard-form").hidden=false;$("onboard-first-name").focus()};
- $("onboard-back").onclick=()=>{$("onboard-form").hidden=true;$("onboard-choices").hidden=false};
+ $("onboarding").hidden=false;$("onboard-choices").hidden=false;$("onboard-form").hidden=true;$("onboard-step").textContent="Početak";
+ $("onboard-new").onclick=()=>{$("onboard-choices").hidden=true;$("onboard-form").hidden=false;$("onboard-step").textContent="Prva osoba";$("onboard-first-name").focus()};
+ $("onboard-back").onclick=()=>{$("onboard-form").hidden=true;$("onboard-choices").hidden=false;$("onboard-step").textContent="Početak";$("onboard-new").focus()};
  $("onboard-import").onclick=()=>{onboardingImport=true;importMode="replace";$("file").click()};
  $("onboard-form").onsubmit=e=>{e.preventDefault();const name=$("onboard-first-name").value.trim(),treeName=$("onboard-tree-name").value.trim();if(!name)return;
   ps=[];U=[];uid=0;title=treeName||"Moje porodično stablo";const p=mkp(name);p.sn=$("onboard-last-name").value.trim();p.x=$("onboard-sex").value;invalidateIndex();sel=p.id;focus=null;$("vw").value="all";$("title").value=title;save();finishOnboarding();render();msg("Stablo je napravljeno")};

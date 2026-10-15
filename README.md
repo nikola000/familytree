@@ -20,6 +20,7 @@ Ovaj folder je modularna razvojna verzija aplikacije. Stabilni `../RSv8.html` se
 - `src/js/09-sharing.js` — izdvajanje stabla za deljenje.
 - `src/js/10-kinship-print.js` — srodstvo, provere i štampa.
 - `src/js/11-io-bootstrap.js` — uvoz, izvoz i pokretanje aplikacije.
+- `src/js/12-pwa.js` i `pwa/` — instalacija, offline rad, manifest i ikone aplikacije.
 - `dist/RSv9-dev.html` — izgrađena samostalna verzija.
 
 ## Build

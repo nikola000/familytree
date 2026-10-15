@@ -8,11 +8,15 @@ const toggleMenu=(btn,build)=>{if(popEl&&popEl._b===btn){closePop(true);return}o
 document.addEventListener("click",e=>{if(popEl&&!popEl.contains(e.target)&&!e.target.closest("[data-m]"))closePop();if(!e.target.closest("#sbox")){if(typeof closeSearch==="function")closeSearch();else $("sres").hidden=true}},true);
 const openDrawer=o=>{$("drawer").hidden=!o;$("scrim").hidden=!o};
 $("hb").onclick=()=>openDrawer(true);$("dclose").onclick=()=>openDrawer(false);$("scrim").onclick=()=>openDrawer(false);
-let modalOk=null;
-function openModal(title,body,ok,label){$("mbox").classList.remove("wide","share-modal");$("mt").textContent=title;$("mb").innerHTML=body;$("mok").textContent=label||"Sačuvaj";modalOk=ok;$("modal").hidden=false}
-const closeModal=()=>{$("modal").hidden=true;modalOk=null};
-$("mok").onclick=()=>{const f=modalOk;if(f)f();closeModal()};$("mno").onclick=closeModal;
+let modalOk=null,modalReturnFocus=null;
+function openModal(title,body,ok,label){
+ $("mbox").classList.remove("wide","share-modal");$("mt").textContent=title;$("mb").innerHTML=body;$("mok").textContent=label||"Sačuvaj";$("mno").hidden=label==="Zatvori";modalOk=ok;modalReturnFocus=document.activeElement;$("modal").hidden=false;
+ requestAnimationFrame(()=>{const first=$("mb").querySelector("input:not([disabled]),select:not([disabled]),textarea:not([disabled]),button:not([disabled])");(first||$("mok")).focus()})
+}
+const closeModal=()=>{if($("modal").hidden)return;$("modal").hidden=true;modalOk=null;const f=modalReturnFocus;modalReturnFocus=null;if(f&&f.isConnected)f.focus()};
+$("mok").onclick=()=>{const f=modalOk;if(f)f();closeModal()};$("mno").onclick=closeModal;$("mclose").onclick=closeModal;
 $("modal").onclick=e=>{if(e.target===$("modal"))closeModal()};
+$("modal").onkeydown=e=>{if(e.key!=="Tab")return;const a=[...$("mbox").querySelectorAll('button:not([disabled]):not([hidden]),input:not([disabled]),select:not([disabled]),textarea:not([disabled]),a[href]')].filter(x=>x.offsetParent!==null||x===$("mok")||x===$("mclose"));if(!a.length)return;const first=a[0],last=a[a.length-1];if(e.shiftKey&&document.activeElement===first){e.preventDefault();last.focus()}else if(!e.shiftKey&&document.activeElement===last){e.preventDefault();first.focus()}};
 function doUndo(){if(!stack.length)return;const s0=sel;redo.push(snap());load(stack.pop());sel=by(s0)?s0:null;$("title").value=title;save();render()}
 function doRedo(){if(!redo.length)return;const s0=sel;stack.push(snap());load(redo.pop());sel=by(s0)?s0:null;$("title").value=title;save();render()}
 $("undo").onclick=doUndo;$("redo").onclick=doRedo;

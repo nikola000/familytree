@@ -73,5 +73,28 @@ function expS(){saveFile("rodoslov.svg",new Blob([viewSvg(null,"print").s],{type
 function expP(){const r=viewSvg(null,"print"),k=Math.min(4,16000/Math.max(r.w,r.h)),img=new Image();
  img.onload=()=>{const c=document.createElement("canvas");c.width=Math.round(r.w*k);c.height=Math.round(r.h*k);const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,c.width,c.height);x.drawImage(img,0,0,c.width,c.height);c.toBlob(b=>b?saveFile("rodoslov-stampa.png",b):msg("Izvoz slike nije uspeo"),"image/png")};
  img.onerror=()=>msg("Izvoz slike nije uspeo");img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(r.s)}
-$("dps").onclick=expS;$("dpp").onclick=expP;
+const pdfEncoder=new TextEncoder();
+function pdfJoin(parts){let size=0;const bytes=parts.map(x=>{const b=typeof x==="string"?pdfEncoder.encode(x):x;size+=b.length;return b}),out=new Uint8Array(size);let at=0;for(const b of bytes){out.set(b,at);at+=b.length}return out}
+function jpegPdfDocument(jpeg,imageWidth,imageHeight,pageWidth,pageHeight,margin=28){
+ const availW=pageWidth-margin*2,availH=pageHeight-margin*2,scale=Math.min(availW/imageWidth,availH/imageHeight),drawW=imageWidth*scale,drawH=imageHeight*scale,x=(pageWidth-drawW)/2,y=(pageHeight-drawH)/2;
+ const content=`q\n${drawW.toFixed(3)} 0 0 ${drawH.toFixed(3)} ${x.toFixed(3)} ${y.toFixed(3)} cm\n/Im0 Do\nQ\n`;
+ const objects=[null,"<< /Type /Catalog /Pages 2 0 R >>","<< /Type /Pages /Kids [4 0 R] /Count 1 >>",[ `<< /Type /XObject /Subtype /Image /Width ${imageWidth} /Height ${imageHeight} /ColorSpace /DeviceRGB /BitsPerComponent 8 /Filter /DCTDecode /Length ${jpeg.length} >>\nstream\n`,jpeg,"\nendstream"],`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 ${pageWidth.toFixed(3)} ${pageHeight.toFixed(3)}] /Resources << /XObject << /Im0 3 0 R >> >> /Contents 5 0 R >>`,`<< /Length ${pdfEncoder.encode(content).length} >>\nstream\n${content}endstream`];
+ const parts=["%PDF-1.4\n%Rodoslov\n"],offsets=[0];let length=pdfEncoder.encode(parts[0]).length;
+ for(let i=1;i<objects.length;i++){offsets[i]=length;const body=Array.isArray(objects[i])?objects[i]:[objects[i]],obj=pdfJoin([`${i} 0 obj\n`,...body,"\nendobj\n"]);parts.push(obj);length+=obj.length}
+ const xref=length;parts.push(`xref\n0 ${objects.length}\n0000000000 65535 f \n${offsets.slice(1).map(n=>String(n).padStart(10,"0")+" 00000 n \n").join("")}trailer\n<< /Size ${objects.length} /Root 1 0 R >>\nstartxref\n${xref}\n%%EOF\n`);return pdfJoin(parts)
+}
+function pdfPage(r,kind){
+ if(kind==="a4")return[841.89,595.28];if(kind==="a3")return[1190.55,841.89];
+ const margin=28,maxSide=2000,scale=Math.min(1,(maxSide-margin*2)/Math.max(r.w,r.h));return[Math.max(220,r.w*scale+margin*2),Math.max(220,r.h*scale+margin*2)]
+}
+function pdfCanvasSize(r,pageWidth,pageHeight,dpi){
+ const margin=28,fit=Math.min((pageWidth-margin*2)/r.w,(pageHeight-margin*2)/r.h),drawW=r.w*fit,drawH=r.h*fit;let w=Math.max(1,Math.round(drawW*dpi/72)),h=Math.max(1,Math.round(drawH*dpi/72));const factor=Math.min(1,9000/Math.max(w,h),Math.sqrt(40000000/(w*h)));return[Math.max(1,Math.round(w*factor)),Math.max(1,Math.round(h*factor))]
+}
+function makePdf(){
+ const kind=$("pdf-page").value,dpi=+$("pdf-quality").value||300,r=viewSvg(null,"print"),[pageWidth,pageHeight]=pdfPage(r,kind),[width,height]=pdfCanvasSize(r,pageWidth,pageHeight,dpi),img=new Image();msg("Pripremam PDF…");
+ img.onload=()=>{const c=document.createElement("canvas");c.width=width;c.height=height;const x=c.getContext("2d");x.fillStyle="#fff";x.fillRect(0,0,width,height);x.imageSmoothingEnabled=true;x.imageSmoothingQuality="high";x.drawImage(img,0,0,width,height);c.toBlob(async blob=>{if(!blob){msg("PDF izvoz nije uspeo");return}try{const pdf=jpegPdfDocument(new Uint8Array(await blob.arrayBuffer()),width,height,pageWidth,pageHeight);await saveFile("rodoslov.pdf",new Blob([pdf],{type:"application/pdf"}));msg("PDF je izvezen")}catch(e){msg("PDF izvoz nije uspeo")}},"image/jpeg",.96)};
+ img.onerror=()=>msg("PDF izvoz nije uspeo");img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(r.s)
+}
+function expPdf(){openDrawer(false);openModal("Izvezi kvalitetan PDF",`<div class="pdf-options"><label>Veličina stranice<select id="pdf-page"><option value="large">Velika stranica — najbolje za ekran</option><option value="a3">A3 položeno — za štampu</option><option value="a4">A4 položeno — za štampu</option></select></label><label>Kvalitet<select id="pdf-quality"><option value="300">Visok — 300 dpi</option><option value="220">Standardan — 220 dpi</option></select></label></div><p class="pdf-note">Celo trenutno stablo biće smešteno na jednu belu stranicu. „Velika stranica” čuva najviše detalja pri uvećavanju; A3/A4 su praktičniji za klasičnu štampu.</p>`,makePdf,"Izvezi PDF")}
+$("dps").onclick=expS;$("dpp").onclick=expP;$("dpdf").onclick=expPdf;
 
