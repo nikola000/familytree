@@ -12,6 +12,8 @@ const maskableIcon=fs.readFileSync(path.join(root,"dist","pwa-maskable-512.png")
 const quiet=new VirtualConsole();
 
 assert.equal(manifest.display,"standalone");
+assert.equal(manifest.background_color,"#f5f6f8");
+assert.equal(manifest.theme_color,"#2f5d40");
 assert.deepEqual(manifest.icons.map(x=>[x.src,x.sizes,x.purpose]),[["/pwa-icon-192.png","192x192","any"],["/pwa-icon-512.png","512x512","any"],["/pwa-maskable-512.png","512x512","maskable"]]);
 assert.equal(installIcon.readUInt32BE(16),512,"build pravi PNG ikonu za instalaciju");
 assert.equal(maskableIcon.readUInt32BE(16),512,"build kopira posebnu maskable ikonu");
