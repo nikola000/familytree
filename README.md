@@ -2,7 +2,7 @@
 
 Kratka pravila za budući rad nalaze se u `AGENTS.md`, a trenutno stanje, arhitektura, odluke i roadmap u `docs/PROJECT_STATE.md`. Time buduće sesije ne moraju da rekonstruišu projekat iz istorije razgovora.
 
-Ovaj folder je modularna razvojna verzija aplikacije. Stabilni `../RSv8.html` se ne menja kada se radi u ovom folderu.
+Ovaj folder je samostalna modularna verzija aplikacije i jedini aktivni izvor projekta.
 
 ## Struktura
 
@@ -38,8 +38,6 @@ Ako komandu pokrećeš iz glavnog foldera, prvo pređi u `DEV` sa `cd .\DEV`.
 ```powershell
 node .\DEV\tests\family-data.test.js
 ```
-
-Za ponovno pravljenje DEV strukture iz stabilnog `RSv8.html` koristi se `setup-dev.ps1`. To prepisuje DEV izvorne module i zato ga ne treba pokretati nakon ručnih DEV izmena.
 
 DEV koristi JSON verziju 3 sa eksplicitno upisanim roditeljima. Uvoz verzije 2 je podržan i automatski se migrira; tok dodavanja deteta ostaje isti i oba izabrana roditelja upisuju se automatski.
 

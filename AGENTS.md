@@ -1,6 +1,6 @@
 # Pravila rada na projektu
 
-- Aktivni projekat je ovaj `DEV` folder; ne menjati `../RSv8.html` bez izričitog zahteva.
+- Aktivni projekat je ovaj `DEV` folder i samostalan je; ne oslanjati se na fajlove iznad korena repozitorijuma.
 - Pre izmene pročitati samo relevantne delove `docs/PROJECT_STATE.md`, ne celu istoriju projekta.
 - Kanonski izvor su `index.html`, `src/`, `netlify/` i `tools/`; `dist/` generiše `npm run build` i nije izvor.
 - Pre commita obavezno pokrenuti `npm run check`.
