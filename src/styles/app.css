@@ -1,4 +1,4 @@
-﻿:root{--bg:#eef3ef;--fg:#1f2b24;--card:#fbfdfb;--bd:#c7d3ca;--ac:#2f5d40;--mut:#637067;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+﻿:root{--bg:#f5f6f8;--fg:#1c2330;--card:#fff;--bd:#cfd6e2;--ac:#2f5d9e;--mut:#667;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#14181f;--fg:#e8ecf3;--card:#1e2430;--bd:#38425a;--ac:#7fa8e6;--mut:#9aa}}
 :root[data-theme="dark"]{--bg:#14181f;--fg:#e8ecf3;--card:#1e2430;--bd:#38425a;--ac:#7fa8e6;--mut:#9aa}
 html,body{height:100%;margin:0}
@@ -14,14 +14,13 @@ body{background:var(--bg);color:var(--fg);font:15px/1.4 "Segoe UI Variable Text"
 .onboard-form-intro{margin:0;padding:10px 12px;border-left:3px solid var(--ac);background:var(--bg);color:var(--mut);font-size:13px}
 .onboard-storage{padding:12px;border-radius:10px;background:var(--bg);display:flex;flex-direction:column;gap:4px}
 @media(max-width:520px){.onboard-card{padding:18px}.onboard-card h1{font-size:25px}.onboard-choices{grid-template-columns:1fr}.onboard-choice{min-height:90px}.onboard-benefits span{flex:1 1 auto;text-align:center}}
-button,select{font:inherit;padding:7px 10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:8px;cursor:pointer;transition:border-color .15s,background-color .15s,box-shadow .15s}
+button,select{font:inherit;padding:7px 10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:8px;cursor:pointer}
 a.button{font:inherit;padding:7px 10px;border:1px solid var(--bd);background:var(--card);color:var(--fg);border-radius:8px;cursor:pointer;text-decoration:none;box-sizing:border-box}
 button.p{background:var(--ac);color:#fff;border-color:var(--ac)}
-button:hover:not(:disabled),a.button:hover{background:color-mix(in srgb,var(--card) 88%,var(--ac));border-color:color-mix(in srgb,var(--ac) 45%,var(--bd))}button.p:hover:not(:disabled){background:color-mix(in srgb,var(--ac) 88%,#000);border-color:color-mix(in srgb,var(--ac) 88%,#000)}button:focus-visible,select:focus-visible,a.button:focus-visible,input:focus-visible,textarea:focus-visible{outline:3px solid color-mix(in srgb,var(--ac) 28%,transparent);outline-offset:2px}
 button.d{color:#c0392b}
 button:disabled{opacity:.4}
 input[type=text],textarea{font:inherit;padding:7px 9px;border:1px solid var(--bd);border-radius:8px;background:var(--card);color:var(--fg);min-width:0;box-sizing:border-box}
-header{padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-bottom:1px solid var(--bd);background:var(--card);box-shadow:0 1px 7px rgba(31,50,39,.1);z-index:2}
+header{padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-bottom:1px solid var(--bd)}
 #sharecopy{padding:7px 10px;display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:center;background:#e8f1ff;color:#17365f;border-bottom:1px solid #b7cceb;font-size:13px}
 #sharecopy button{padding:5px 10px}
 #title{flex:2 1 160px}
@@ -31,12 +30,12 @@ header{padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;b
 #sres button:hover,#sres button.active{background:var(--bg);box-shadow:inset 3px 0 var(--ac)}#sres small{color:var(--mut)}#sres .none{padding:8px;color:var(--mut)}
 #bk{background:#fff3cd;color:#5c4400;padding:6px 10px;font-size:13px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 #bk button{padding:3px 8px}
-#tabs{display:flex;gap:6px;padding:6px 10px;border-bottom:1px solid var(--bd);background:color-mix(in srgb,var(--card) 88%,var(--bg))}
+#tabs{display:flex;gap:6px;padding:6px 10px;border-bottom:1px solid var(--bd)}
 .tab.on{background:var(--ac);color:#fff;border-color:var(--ac)}
 #stats{font-size:12px;color:var(--mut);padding:4px 10px}
 #info{font-size:12px;color:var(--mut);padding:0 10px 4px}
 #stage{flex:1;min-height:0;position:relative;margin:0 8px 8px}
-#wrap{position:absolute;inset:0;overflow:auto;background:var(--card);border:1px solid var(--bd);border-radius:12px;box-shadow:0 5px 18px rgba(31,50,39,.12);touch-action:none;cursor:grab}
+#wrap{position:absolute;inset:0;overflow:auto;background:var(--card);border:1px solid var(--bd);border-radius:10px;touch-action:none;cursor:grab}
 #wrap.dragging{cursor:grabbing;user-select:none}
 #zoom{position:absolute;right:14px;bottom:14px;display:flex;flex-direction:column;gap:6px}
 #zoom button{width:38px;height:38px;padding:0;font-size:20px;box-shadow:0 2px 8px rgba(0,0,0,.2)}

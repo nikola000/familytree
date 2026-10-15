@@ -4,7 +4,7 @@ const READ_ONLY=!!EMB;
 const FL=[["by","born"],["dy","died"],["pl","place"],["sl","slava"],["nt","note"]];
 const yrs=p=>p.by&&p.dy?p.by+"–"+p.dy:p.by||(p.dy?"†"+p.dy:"");
 const GF={"":"#e4e9f0",m:"#d3e4fb",f:"#fbe0ea"};
-const TH={light:{bg:"#fbfdfb",line:"#3f5547",grid:"#dce6df",head:"#2f5d40",cap:"#24342a",ring:"#ffffff",cs:"#4f7a5b",pc:["#a85a38","#2e7660","#73518f","#3d6f9f","#88702e"],cards:false},cards:{bg:"#3a1630",line:"#ead9a6",grid:"#5b2b4b",head:"#d9b45a",cap:"#f6e7c1",ring:"#3a1630",cs:"#c9a24a",pc:["#ffb36b","#ff7a9c","#c9a7ff","#ffd86b","#f08a5d"],cards:true},print:{bg:"#ffffff",line:"#000000",grid:"#cccccc",head:"#000000",cap:"#000000",ring:"#ffffff",cs:"#000000",pc:["#000000","#555555","#888888","#333333","#666666"],cards:false,print:true}};
+const TH={light:{bg:"#ffffff",line:"#333333",grid:"#dddddd",head:"#34507a",cap:"#222222",ring:"#ffffff",cs:"#4a6fa5",pc:["#b5572a","#2a7b5f","#7a3fa0","#2f6fb0","#8a6d00"],cards:false},cards:{bg:"#3a1630",line:"#ead9a6",grid:"#5b2b4b",head:"#d9b45a",cap:"#f6e7c1",ring:"#3a1630",cs:"#c9a24a",pc:["#ffb36b","#ff7a9c","#c9a7ff","#ffd86b","#f08a5d"],cards:true},print:{bg:"#ffffff",line:"#000000",grid:"#cccccc",head:"#000000",cap:"#000000",ring:"#ffffff",cs:"#000000",pc:["#000000","#555555","#888888","#333333","#666666"],cards:false,print:true}};
 let hlSet=new Set(),kinFrom=null,linkMode="partner";
 let W=120,H=38,GX=156,GY=56;const PX=24,TOP=62,BOT=64,NEW="Nova osoba";
 let ps=[],U=[],uid=0,title="Moje porodično stablo",sel=null,linkFrom=null,focus=null,zoom=1,stack=[],redo=[],collapsed=new Set();

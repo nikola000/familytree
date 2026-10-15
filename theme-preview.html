@@ -1,0 +1,108 @@
+<!doctype html>
+<html lang="sr-Latn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Rodoslov — predlozi svetle teme</title>
+<style>
+*{box-sizing:border-box}
+:root{color-scheme:light;font-family:"Segoe UI Variable Text","Aptos",system-ui,-apple-system,"Segoe UI",sans-serif;background:#e9ecea;color:#172019}
+body{margin:0;min-height:100vh;background:radial-gradient(circle at 15% 0,#fff 0,transparent 30rem),#e9ecea}
+button,input{font:inherit}
+.page-head{max-width:1440px;margin:auto;padding:48px 28px 24px;display:grid;grid-template-columns:1fr auto;gap:24px;align-items:end}
+.eyebrow{margin:0 0 8px;color:#496557;font-weight:750;font-size:12px;letter-spacing:.15em;text-transform:uppercase}
+h1{margin:0;font-size:clamp(30px,5vw,54px);line-height:1.03;letter-spacing:-.04em;max-width:780px}
+.intro{margin:14px 0 0;color:#59625c;font-size:16px;max-width:700px}
+.choice-status{min-width:230px;padding:13px 16px;border:1px solid #c8ceca;border-radius:14px;background:#ffffffb8;box-shadow:0 8px 30px #25332912;backdrop-filter:blur(8px)}
+.choice-status small{display:block;color:#727b75}.choice-status strong{display:block;margin-top:3px;font-size:17px}
+.themes{max-width:1440px;margin:auto;padding:18px 28px 64px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:24px}
+.theme{--bg:#f3f5f3;--surface:#fff;--surface2:#edf1ee;--text:#1d2922;--muted:#667168;--line:#ccd5cf;--accent:#386348;--accent2:#dce9df;--canvas:#fafcfb;--node:#fff;--node2:#e6f0e8;--tree:#567363;position:relative;overflow:hidden;border:2px solid transparent;border-radius:24px;background:var(--bg);color:var(--text);box-shadow:0 14px 45px #1b2b2114;transition:.2s ease}
+.theme[data-theme="mist"]{--bg:#eef3f7;--surface:#fbfdff;--surface2:#e4ecf2;--text:#172530;--muted:#61717d;--line:#c6d3dc;--accent:#315f7a;--accent2:#d9e9f2;--canvas:#f8fbfd;--node:#fff;--node2:#dfeef5;--tree:#557487}
+.theme[data-theme="paper"]{--bg:#f4efe6;--surface:#fffdf8;--surface2:#ece3d5;--text:#302a21;--muted:#756b5d;--line:#d7caba;--accent:#8a512f;--accent2:#f2dfcf;--canvas:#fdfaf4;--node:#fffdf9;--node2:#f3e5d8;--tree:#80664f}
+.theme[data-theme="sage"]{--bg:#eef1e8;--surface:#fdfefa;--surface2:#e3e8d9;--text:#273026;--muted:#687166;--line:#cbd2c3;--accent:#4c6745;--accent2:#dce7d7;--canvas:#fafcf6;--node:#fff;--node2:#e4ecdf;--tree:#667d61}
+.theme.selected{border-color:var(--accent);box-shadow:0 0 0 4px color-mix(in srgb,var(--accent) 16%,transparent),0 18px 52px #1b2b2124;transform:translateY(-2px)}
+.theme-head{display:flex;align-items:flex-start;gap:12px;padding:20px 20px 15px}
+.number{width:34px;height:34px;border-radius:10px;background:var(--surface2);display:grid;place-items:center;color:var(--accent);font-weight:800;flex:none}
+.theme-title{min-width:0;flex:1}.theme-title h2{margin:0;font-size:20px;letter-spacing:-.02em}.theme-title p{margin:3px 0 0;color:var(--muted);font-size:13px}
+.palette{display:flex;gap:5px;padding-top:3px}.swatch{width:17px;height:17px;border-radius:50%;border:2px solid var(--surface);box-shadow:0 0 0 1px var(--line)}.swatch:nth-child(1){background:var(--bg)}.swatch:nth-child(2){background:var(--surface)}.swatch:nth-child(3){background:var(--accent)}.swatch:nth-child(4){background:var(--tree)}
+.mock{margin:0 16px 16px;border:1px solid var(--line);border-radius:16px;overflow:hidden;background:var(--surface);box-shadow:0 10px 24px #26352b12}
+.topbar{height:52px;padding:8px 10px;display:flex;align-items:center;gap:8px;border-bottom:1px solid var(--line);background:var(--surface)}
+.brand{width:30px;height:30px;border-radius:9px;background:var(--accent);color:#fff;display:grid;place-items:center;font-weight:800}.title-input{height:34px;min-width:0;flex:1;border:1px solid var(--line);border-radius:8px;background:var(--surface);color:var(--text);padding:0 10px;font-weight:650}.search{height:34px;width:32%;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--muted);padding:0 10px}.icon-btn,.primary{height:34px;border-radius:8px;border:1px solid var(--line);background:var(--surface);color:var(--text);padding:0 10px}.primary{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:700}
+.tabs{height:42px;display:flex;align-items:center;gap:6px;padding:5px 10px;border-bottom:1px solid var(--line);background:color-mix(in srgb,var(--surface) 72%,var(--surface2))}.tab{padding:7px 11px;border-radius:8px;color:var(--muted);font-size:12px}.tab.active{background:var(--accent2);color:var(--accent);font-weight:750}
+.workspace{position:relative;height:288px;background:var(--canvas);overflow:hidden}.workspace::before{content:"";position:absolute;inset:0;background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);background-size:28px 28px;opacity:.24}
+.tree{position:absolute;inset:18px 30px 16px}.line{position:absolute;background:var(--tree);opacity:.7}.v1{left:50%;top:52px;width:2px;height:40px}.h1{left:24%;right:24%;top:91px;height:2px}.v2{left:24%;top:91px;width:2px;height:32px}.v3{right:24%;top:91px;width:2px;height:32px}.v4{left:50%;top:143px;width:2px;height:38px}.node{position:absolute;width:132px;min-height:52px;border:1px solid var(--line);border-radius:11px;background:var(--node);padding:8px 10px;box-shadow:0 5px 14px #1e2c2312}.node b{display:block;font-size:12px}.node small{display:block;margin-top:2px;color:var(--muted);font-size:10px}.node.main{left:calc(50% - 66px);top:0;background:var(--node2);border-color:color-mix(in srgb,var(--accent) 38%,var(--line));box-shadow:0 0 0 3px color-mix(in srgb,var(--accent) 10%,transparent)}.node.left{left:calc(24% - 66px);top:122px}.node.right{right:calc(24% - 66px);top:122px}.node.child{left:calc(50% - 66px);top:180px}.zoom{position:absolute;right:10px;bottom:10px;display:grid;gap:5px}.zoom span{width:30px;height:30px;border:1px solid var(--line);border-radius:8px;background:var(--surface);display:grid;place-items:center;color:var(--accent);font-weight:800;box-shadow:0 3px 9px #1e2c2312}
+.editor{display:grid;grid-template-columns:1fr 1fr auto;gap:7px;padding:9px 10px;border-top:1px solid var(--line);background:var(--surface)}.field{height:35px;border:1px solid var(--line);border-radius:8px;background:var(--bg);padding:8px 9px;font-size:11px;color:var(--muted)}
+.theme-foot{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:0 20px 20px}.traits{display:flex;flex-wrap:wrap;gap:6px}.trait{padding:5px 8px;border-radius:99px;background:var(--surface2);color:var(--muted);font-size:11px}.choose{border:1px solid var(--accent);border-radius:10px;background:transparent;color:var(--accent);padding:9px 15px;font-weight:750;cursor:pointer;transition:.15s}.choose:hover,.choose:focus-visible{background:var(--accent);color:#fff;outline:none}.selected .choose{background:var(--accent);color:#fff}.selected .choose::after{content:" ✓"}
+.note{max-width:1440px;margin:-38px auto 48px;padding:0 28px;color:#667069;font-size:13px}
+@media(max-width:980px){.themes{grid-template-columns:1fr}.page-head{grid-template-columns:1fr}.choice-status{max-width:420px}.workspace{height:270px}}
+@media(max-width:580px){.page-head{padding:32px 14px 18px}.themes{padding:12px 14px 52px;gap:16px}.theme-head{padding:16px}.palette{display:none}.mock{margin:0 10px 14px}.search{display:none}.topbar{height:48px}.workspace{height:245px}.tree{inset:15px 8px}.node{width:108px}.node.main,.node.child{left:calc(50% - 54px)}.node.left{left:calc(23% - 54px)}.node.right{right:calc(23% - 54px)}.editor{grid-template-columns:1fr 1fr}.editor .primary{grid-column:1/-1}.theme-foot{padding:0 15px 16px;align-items:flex-end}.note{padding:0 14px}}
+</style>
+</head>
+<body>
+<header class="page-head">
+  <div>
+    <p class="eyebrow">Rodoslov · pregled dizajna</p>
+    <h1>Četiri pravca za novu svetlu temu</h1>
+    <p class="intro">Isti interfejs u četiri različita karaktera. Klikni „Izaberi ovu temu“, pa mi samo pošalji njen broj ili naziv.</p>
+  </div>
+  <aside class="choice-status" aria-live="polite"><small>Trenutni izbor</small><strong id="choice">Još ništa nije izabrano</strong></aside>
+</header>
+
+<main class="themes">
+  <article class="theme" data-theme="forest" data-name="01 — Šumski papir">
+    <header class="theme-head"><span class="number">01</span><div class="theme-title"><h2>Šumski papir</h2><p>Smirena, prepoznatljiva i prirodna</p></div><div class="palette" aria-label="Paleta"><i class="swatch"></i><i class="swatch"></i><i class="swatch"></i><i class="swatch"></i></div></header>
+    <div class="mock">
+      <div class="topbar"><span class="brand">R</span><input class="title-input" value="Moje porodično stablo" readonly><input class="search" value="Pretraži osobu…" readonly><button class="icon-btn">Meni</button></div>
+      <div class="tabs"><span class="tab active">Stablo</span><span class="tab">Tabela</span><span class="tab">Peščani sat</span></div>
+      <div class="workspace"><div class="tree"><i class="line v1"></i><i class="line h1"></i><i class="line v2"></i><i class="line v3"></i><i class="line v4"></i><div class="node main"><b>Ana Jovanović</b><small>1982 · Beograd</small></div><div class="node left"><b>Marko Jovanović</b><small>1954–2021</small></div><div class="node right"><b>Milena Petrović</b><small>1958</small></div><div class="node child"><b>Luka Jovanović</b><small>2010 · Novi Sad</small></div></div><div class="zoom"><span>+</span><span>−</span></div></div>
+      <div class="editor"><div class="field">Ana</div><div class="field">Jovanović</div><button class="primary">Sačuvaj</button></div>
+    </div>
+    <footer class="theme-foot"><div class="traits"><span class="trait">prirodna</span><span class="trait">topla</span><span class="trait">brendirana</span></div><button class="choose">Izaberi ovu temu</button></footer>
+  </article>
+
+  <article class="theme" data-theme="mist" data-name="02 — Jutarnja magla">
+    <header class="theme-head"><span class="number">02</span><div class="theme-title"><h2>Jutarnja magla</h2><p>Čista, savremena i prozračna</p></div><div class="palette" aria-label="Paleta"><i class="swatch"></i><i class="swatch"></i><i class="swatch"></i><i class="swatch"></i></div></header>
+    <div class="mock">
+      <div class="topbar"><span class="brand">R</span><input class="title-input" value="Moje porodično stablo" readonly><input class="search" value="Pretraži osobu…" readonly><button class="icon-btn">Meni</button></div>
+      <div class="tabs"><span class="tab active">Stablo</span><span class="tab">Tabela</span><span class="tab">Peščani sat</span></div>
+      <div class="workspace"><div class="tree"><i class="line v1"></i><i class="line h1"></i><i class="line v2"></i><i class="line v3"></i><i class="line v4"></i><div class="node main"><b>Ana Jovanović</b><small>1982 · Beograd</small></div><div class="node left"><b>Marko Jovanović</b><small>1954–2021</small></div><div class="node right"><b>Milena Petrović</b><small>1958</small></div><div class="node child"><b>Luka Jovanović</b><small>2010 · Novi Sad</small></div></div><div class="zoom"><span>+</span><span>−</span></div></div>
+      <div class="editor"><div class="field">Ana</div><div class="field">Jovanović</div><button class="primary">Sačuvaj</button></div>
+    </div>
+    <footer class="theme-foot"><div class="traits"><span class="trait">moderna</span><span class="trait">mirna</span><span class="trait">precizna</span></div><button class="choose">Izaberi ovu temu</button></footer>
+  </article>
+
+  <article class="theme" data-theme="paper" data-name="03 — Porodični album">
+    <header class="theme-head"><span class="number">03</span><div class="theme-title"><h2>Porodični album</h2><p>Topla, arhivska i emotivna</p></div><div class="palette" aria-label="Paleta"><i class="swatch"></i><i class="swatch"></i><i class="swatch"></i><i class="swatch"></i></div></header>
+    <div class="mock">
+      <div class="topbar"><span class="brand">R</span><input class="title-input" value="Moje porodično stablo" readonly><input class="search" value="Pretraži osobu…" readonly><button class="icon-btn">Meni</button></div>
+      <div class="tabs"><span class="tab active">Stablo</span><span class="tab">Tabela</span><span class="tab">Peščani sat</span></div>
+      <div class="workspace"><div class="tree"><i class="line v1"></i><i class="line h1"></i><i class="line v2"></i><i class="line v3"></i><i class="line v4"></i><div class="node main"><b>Ana Jovanović</b><small>1982 · Beograd</small></div><div class="node left"><b>Marko Jovanović</b><small>1954–2021</small></div><div class="node right"><b>Milena Petrović</b><small>1958</small></div><div class="node child"><b>Luka Jovanović</b><small>2010 · Novi Sad</small></div></div><div class="zoom"><span>+</span><span>−</span></div></div>
+      <div class="editor"><div class="field">Ana</div><div class="field">Jovanović</div><button class="primary">Sačuvaj</button></div>
+    </div>
+    <footer class="theme-foot"><div class="traits"><span class="trait">topla</span><span class="trait">tradicionalna</span><span class="trait">lična</span></div><button class="choose">Izaberi ovu temu</button></footer>
+  </article>
+
+  <article class="theme" data-theme="sage" data-name="04 — Tiha žalfija">
+    <header class="theme-head"><span class="number">04</span><div class="theme-title"><h2>Tiha žalfija</h2><p>Meka, elegantna i nenametljiva</p></div><div class="palette" aria-label="Paleta"><i class="swatch"></i><i class="swatch"></i><i class="swatch"></i><i class="swatch"></i></div></header>
+    <div class="mock">
+      <div class="topbar"><span class="brand">R</span><input class="title-input" value="Moje porodično stablo" readonly><input class="search" value="Pretraži osobu…" readonly><button class="icon-btn">Meni</button></div>
+      <div class="tabs"><span class="tab active">Stablo</span><span class="tab">Tabela</span><span class="tab">Peščani sat</span></div>
+      <div class="workspace"><div class="tree"><i class="line v1"></i><i class="line h1"></i><i class="line v2"></i><i class="line v3"></i><i class="line v4"></i><div class="node main"><b>Ana Jovanović</b><small>1982 · Beograd</small></div><div class="node left"><b>Marko Jovanović</b><small>1954–2021</small></div><div class="node right"><b>Milena Petrović</b><small>1958</small></div><div class="node child"><b>Luka Jovanović</b><small>2010 · Novi Sad</small></div></div><div class="zoom"><span>+</span><span>−</span></div></div>
+      <div class="editor"><div class="field">Ana</div><div class="field">Jovanović</div><button class="primary">Sačuvaj</button></div>
+    </div>
+    <footer class="theme-foot"><div class="traits"><span class="trait">elegantna</span><span class="trait">organska</span><span class="trait">nenametljiva</span></div><button class="choose">Izaberi ovu temu</button></footer>
+  </article>
+</main>
+
+<p class="note">Ovo je samo vizuelni pregled. Izbor ovde ne menja podatke, podešavanja niti izgled glavne aplikacije.</p>
+<script>
+const cards=[...document.querySelectorAll(".theme")],choice=document.querySelector("#choice");
+cards.forEach(card=>card.querySelector(".choose").addEventListener("click",()=>{
+  cards.forEach(item=>item.classList.remove("selected"));
+  card.classList.add("selected");
+  choice.textContent=card.dataset.name;
+  card.scrollIntoView?.({behavior:"smooth",block:"center"});
+}));
+</script>
+</body>
+</html>
