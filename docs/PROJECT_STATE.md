@@ -25,7 +25,7 @@ Kod je modularan po fajlovima, ali browser moduli namerno dele globalno stanje. 
 
 - JSON format je verzija 3 sa eksplicitnim roditeljima; v2 se migrira.
 - Nova instalacija prikazuje izbor novog stabla ili JSON uvoza, unos prve osobe i objašnjenje lokalnog čuvanja; početna tema je svetla.
-- Postojeća stabla, tema i verzije ostaju u `localStorage` konkretnog origin-a/browsera.
+- Postojeća stabla, tema i verzije ostaju u `localStorage` konkretnog origin-a/browsera. Osnovna svetla tema koristi mirnu papirno-zelenu paletu i ostaje podrazumevana za nove instalacije.
 - Pretraga imena i prezimena radi između srpske ćirilice i latinice, uključujući česte oblike bez dijakritike; rezultati se mogu birati strelicama i tasterom Enter.
 - Podeljeni link je read-only. Dugme „Sačuvaj u moja stabla“ pravi nezavisnu lokalnu kopiju i sprečava ponovni uvoz istog linka.
 - Fokusirani SVG prikazi „Peščani sat“ i „Lepeza predaka“ koriste izabranu osobu kao centar, imaju ograničenje generacija, zoom/pan i rade i u read-only podeljenom prikazu. Peščani sat vodi zasebnu putanju od roditeljskog para do jednog deteta, a zajedničku razgranatu sabirnicu koristi samo kada par ima više prikazane dece; paralelni koridori i pozadinska kontura sprečavaju vizuelno spajanje različitih porodica. Centar lepeze je unutrašnji polukružni segment iste geometrije kao prstenovi.

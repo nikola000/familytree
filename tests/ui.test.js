@@ -14,6 +14,8 @@ const quiet=new VirtualConsole();
 assert.equal(manifest.display,"standalone");
 assert.equal(manifest.background_color,"#1f3028");
 assert.equal(manifest.theme_color,"#2f5d40");
+assert.match(html,/--bg:#eef3ef;--fg:#1f2b24;--card:#fbfdfb/,"build sadrzi unapredjenu svetlu UI paletu");
+assert.match(html,/light:\{bg:"#fbfdfb",line:"#3f5547",grid:"#dce6df",head:"#2f5d40"/,"build sadrzi unapredjenu svetlu paletu stabla");
 assert.deepEqual(manifest.icons.map(x=>[x.src,x.sizes,x.purpose]),[["/pwa-icon-192.png","192x192","any"],["/pwa-icon-512.png","512x512","any"],["/pwa-maskable-512.png","512x512","maskable"]]);
 assert.equal(installIcon.readUInt32BE(16),512,"build pravi PNG ikonu za instalaciju");
 assert.equal(maskableIcon.readUInt32BE(16),512,"build kopira posebnu maskable ikonu");
