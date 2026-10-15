@@ -34,12 +34,15 @@ const endPointer=e=>{const w=$("wrap");if(e.pointerType==="touch")touchPoints.de
 $("wrap").addEventListener("pointerup",endPointer);$("wrap").addEventListener("pointercancel",endPointer);
 
 /* pretraga */
-function doSearch(){const q=FamilyData.searchKey($("sq").value),r=$("sres");if(!q){r.hidden=true;return}
+let searchIndex=-1;
+function closeSearch(){searchIndex=-1;$("sres").hidden=true;$("sq").setAttribute("aria-expanded","false");$("sq").removeAttribute("aria-activedescendant")}
+function searchActive(index){const a=[...$("sres").querySelectorAll("button")];if(!a.length)return null;searchIndex=(index+a.length)%a.length;a.forEach((b,i)=>{const on=i===searchIndex;b.classList.toggle("active",on);b.setAttribute("aria-selected",String(on))});const b=a[searchIndex];$("sq").setAttribute("aria-activedescendant",b.id);if(b.scrollIntoView)b.scrollIntoView({block:"nearest"});return b}
+function doSearch(){const q=FamilyData.searchKey($("sq").value),r=$("sres");searchIndex=-1;$("sq").removeAttribute("aria-activedescendant");if(!q){closeSearch();return}
  const g=gens(),base=$("gr").value==="0"?0:Math.min(...Object.values(g)),m=ps.filter(p=>FamilyData.searchKey(personSearchText(p)).includes(q)).slice(0,12);
- r.innerHTML=m.length?m.map(p=>{const f=parentsOf(p)[0];return`<button data-id="${p.id}">${esc(nm(p))} ${esc(effS(p))}<small> · ${roman(g[p.id]-base+1)}${f?" · otac: "+esc(nm(f)):""}${p.by?" · "+esc(p.by):""}</small></button>`}).join(""):'<div class="none">Nema rezultata</div>';
- r.hidden=false}
-function pickSearch(id){$("sq").value="";$("sres").hidden=true;if(kinFrom!=null){if(id!==kinFrom)kinDone(id);return}if(linkFrom!=null){if(id!==linkFrom)linkDone(id);return}jump(id)}
+ r.innerHTML=m.length?m.map(p=>{const f=parentsOf(p)[0];return`<button id="sr-${p.id}" role="option" aria-selected="false" data-id="${p.id}">${esc(nm(p))} ${esc(effS(p))}<small> · ${roman(g[p.id]-base+1)}${f?" · otac: "+esc(nm(f)):""}${p.by?" · "+esc(p.by):""}</small></button>`}).join(""):'<div class="none">Nema rezultata</div>';
+ r.hidden=false;$("sq").setAttribute("aria-expanded","true")}
+function pickSearch(id){$("sq").value="";closeSearch();if(kinFrom!=null){if(id!==kinFrom)kinDone(id);return}if(linkFrom!=null){if(id!==linkFrom)linkDone(id);return}jump(id)}
 $("sq").oninput=doSearch;$("sq").onfocus=doSearch;
-$("sq").onkeydown=e=>{if(e.key==="Enter"){const b=$("sres").querySelector("button");if(b)pickSearch(+b.dataset.id)}};
+$("sq").onkeydown=e=>{if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();if($("sres").hidden)doSearch();searchActive(searchIndex+(e.key==="ArrowDown"?1:-1))}else if(e.key==="Enter"){const b=searchIndex>=0?$("sres").querySelectorAll("button")[searchIndex]:$("sres").querySelector("button");if(b){e.preventDefault();pickSearch(+b.dataset.id)}}else if(e.key==="Escape")closeSearch()};
 $("sres").onclick=e=>{const b=e.target.closest("button");if(b)pickSearch(+b.dataset.id)};
 

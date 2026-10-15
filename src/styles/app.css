@@ -25,7 +25,7 @@ header{padding:8px 10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;b
 #sbox{position:relative;flex:1 1 150px}#sq{width:100%}
 #sres{position:absolute;top:100%;left:0;right:0;margin-top:4px;z-index:40;max-height:50vh;overflow:auto;background:var(--card);border:1px solid var(--bd);border-radius:10px;box-shadow:0 6px 24px rgba(0,0,0,.25);padding:4px}
 #sres button{display:block;width:100%;text-align:left;border:0;background:transparent}
-#sres button:hover{background:var(--bg)}#sres small{color:var(--mut)}#sres .none{padding:8px;color:var(--mut)}
+#sres button:hover,#sres button.active{background:var(--bg);box-shadow:inset 3px 0 var(--ac)}#sres small{color:var(--mut)}#sres .none{padding:8px;color:var(--mut)}
 #bk{background:#fff3cd;color:#5c4400;padding:6px 10px;font-size:13px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
 #bk button{padding:3px 8px}
 #tabs{display:flex;gap:6px;padding:6px 10px;border-bottom:1px solid var(--bd)}

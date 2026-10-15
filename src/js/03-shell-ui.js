@@ -5,7 +5,7 @@ function openMenu(btn,items){closePop();const m=document.createElement("div");m.
  document.body.appendChild(m);const r=btn.getBoundingClientRect(),h=m.offsetHeight,below=r.bottom+h+8<innerHeight||r.top<h+8;
  m.style.left=Math.max(4,Math.min(r.left,innerWidth-m.offsetWidth-4))+"px";m.style.top=Math.max(4,below?r.bottom+4:r.top-h-4)+"px";popEl=m;const active=()=>[...m.querySelectorAll("button:not(:disabled)")];m.onkeydown=e=>{const a=active(),i=a.indexOf(document.activeElement);if(e.key==="Escape"){e.preventDefault();closePop(true)}else if(e.key==="ArrowDown"||e.key==="ArrowUp"){e.preventDefault();a[(i+(e.key==="ArrowDown"?1:-1)+a.length)%a.length]?.focus()}else if(e.key==="Home"){e.preventDefault();a[0]?.focus()}else if(e.key==="End"){e.preventDefault();a[a.length-1]?.focus()}};active()[0]?.focus()}
 const toggleMenu=(btn,build)=>{if(popEl&&popEl._b===btn){closePop(true);return}openMenu(btn,build())};
-document.addEventListener("click",e=>{if(popEl&&!popEl.contains(e.target)&&!e.target.closest("[data-m]"))closePop();if(!e.target.closest("#sbox"))$("sres").hidden=true},true);
+document.addEventListener("click",e=>{if(popEl&&!popEl.contains(e.target)&&!e.target.closest("[data-m]"))closePop();if(!e.target.closest("#sbox")){if(typeof closeSearch==="function")closeSearch();else $("sres").hidden=true}},true);
 const openDrawer=o=>{$("drawer").hidden=!o;$("scrim").hidden=!o};
 $("hb").onclick=()=>openDrawer(true);$("dclose").onclick=()=>openDrawer(false);$("scrim").onclick=()=>openDrawer(false);
 let modalOk=null;
@@ -17,6 +17,6 @@ function doUndo(){if(!stack.length)return;const s0=sel;redo.push(snap());load(st
 function doRedo(){if(!redo.length)return;const s0=sel;stack.push(snap());load(redo.pop());sel=by(s0)?s0:null;$("title").value=title;save();render()}
 $("undo").onclick=doUndo;$("redo").onclick=doRedo;
 document.addEventListener("keydown",e=>{
- if(e.key==="Escape"){closePop(true);openDrawer(false);closeModal();$("sres").hidden=true;if(linkFrom!=null||kinFrom!=null){linkFrom=null;kinFrom=null;render()}return}
+ if(e.key==="Escape"){closePop(true);openDrawer(false);closeModal();if(typeof closeSearch==="function")closeSearch();else $("sres").hidden=true;if(linkFrom!=null||kinFrom!=null){linkFrom=null;kinFrom=null;render()}return}
  const t=e.target&&e.target.tagName;if((e.ctrlKey||e.metaKey)&&t!=="INPUT"&&t!=="TEXTAREA"&&t!=="SELECT"){const k=e.key.toLowerCase();if(k==="z"&&!e.shiftKey){e.preventDefault();doUndo()}else if(k==="y"||(k==="z"&&e.shiftKey)){e.preventDefault();doRedo()}}});
 

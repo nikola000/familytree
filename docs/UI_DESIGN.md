@@ -27,6 +27,8 @@ Redosled se uređuje u jednom dijalogu sa pregledom braće/sestara i partnera. S
 - Broj dostupnih generacija računa se iz stvarnih predaka i potomaka izabrane osobe; nema fiksnog maksimuma za standardni prikaz i peščani sat.
 - „Sve“ prikazuje i izračunatu dubinu, a minus iz tog režima polazi od najveće stvarne dubine.
 - Lepeza ostaje na najviše osam prstenova jer svaki prsten udvostručava broj segmenata i iznad toga prestaje da bude čitljiva.
+- Izabrana osoba zauzima unutrašnji polukružni segment lepeze, umesto zasebne pravougaone kartice, tako da svi nivoi čine jednu mirnu geometrijsku celinu.
+- Poznati preci u lepezi prikazuju ime i prezime u odvojenim redovima; svaki red se zasebno skraćuje i ostaje unutar svog segmenta.
 
 ## Deljenje i pomoćne alatke
 
@@ -50,6 +52,7 @@ Osnovni interfejs koristi sistemski varijabilni sans-serif (`Segoe UI Variable T
 
 - Menu dugmad koriste `aria-haspopup`, `aria-expanded` i vraćaju fokus po zatvaranju.
 - Popup meni podržava Escape, strelice, Home/End, Enter i Space.
+- Rezultati pretrage podržavaju strelice gore/dole, Enter za izbor i Escape za zatvaranje, dok fokus ostaje u polju za unos.
 - Radio-grupe i checkbox kontrole ostaju nativni inputi ispod vizuelnog stila.
 - Fokus mora biti jasno vidljiv u svim temama.
 - Boja nikada nije jedini indikator stanja.
