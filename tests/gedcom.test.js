@@ -46,4 +46,9 @@ const fixture=`0 HEAD
 assert.throws(()=>Gedcom.importGedcom(fixture.replace("1 CHAR UTF-8","1 CHAR ANSEL")),/ANSEL/);
 assert.throws(()=>Gedcom.importGedcom(fixture.replace("2 VERS 5.5.1","2 VERS 4.0")),/nije podržana/);
 
+{
+ const zeroIds=`0 HEAD\n1 GEDC\n2 VERS 5.5.1\n1 CHAR UTF-8\n0 @I0@ INDI\n1 NAME Nulti /ID/\n0 @I1@ INDI\n1 NAME Dete /ID/\n0 @F0@ FAM\n1 HUSB @I0@\n1 CHIL @I1@\n0 TRLR`;
+ const data=Gedcom.importGedcom(zeroIds,"Nulti ID").data,ids=data.persons.map(p=>p.id);assert.ok(ids.every(id=>Number.isSafeInteger(id)&&id>0),"GEDCOM @I0@ se premapira na pozitivan interni ID");assert.equal(new Set(ids).size,2);assert.deepEqual(data.persons.find(p=>p.name==="Dete").parents,[data.persons.find(p=>p.name==="Nulti").id]);
+}
+
 console.log("gedcom: svi testovi su prošli");

@@ -11,6 +11,8 @@ Rodoslov uvozi tekstualne GEDCOM fajlove verzije 5.5, 5.5.1 i 7.x (`.ged` ili `.
 - porodice, partneri i najviše dva roditelja (`FAM`, `HUSB`, `WIFE`, `CHIL`, `FAMC`);
 - slava kroz prilagođenu GEDCOM oznaku `_SLAVA`.
 
+GEDCOM identifikatori se pri uvozu bezbedno preslikavaju na pozitivne interne ID-jeve, uključujući dozvoljene reference poput `@I0@`. Početak, uspeh i kvar svake faze uvoza beleže se u konzoli browsera sa prefiksom `[Rodoslov import]`; neuspeh prikazuje i trajan dijalog sa fazom i tehničkom porukom, bez porodičnih podataka.
+
 ## Svesna ograničenja
 
 Trenutni JSON v3 model nema posebna polja za izvore i citate, medije, adrese, zanimanja, više mesta/događaja, datum braka, vrstu roditeljstva niti proizvoljan broj roditelja. Ti podaci se pri uvozu ne preslikavaju u napomenu i ne izmišljaju se. Uvoz prijavljuje oznake koje je preskočio. GEDZIP arhive i ANSEL kodiranje još nisu podržani.

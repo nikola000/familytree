@@ -47,7 +47,7 @@
   const records=roots.filter(x=>x.tag==="INDI"),families=roots.filter(x=>x.tag==="FAM");
   if(!records.length)throw new Error("GEDCOM ne sadrži osobe");
   const ids=new Map(),persons=[],used=new Set();let next=0,unnamed=0;
-  for(const r of records){let id=Number((r.xref.match(/\d+/)||[])[0]);if(!Number.isSafeInteger(id)||id<=0||used.has(id))while(used.has(++next));else next=Math.max(next,id);used.add(id);ids.set(r.xref,id);
+  for(const r of records){let id=Number((r.xref.match(/\d+/)||[])[0]);if(!Number.isSafeInteger(id)||id<=0||used.has(id)){do{id=++next}while(used.has(id))}else next=Math.max(next,id);used.add(id);ids.set(r.xref,id);
    const names=children(r,"NAME"),np=nameParts(names[0]);if(np.name==="Nepoznata osoba")unnamed++;
    const p={id,name:np.name};if(np.surname)p.surname=np.surname;
    const aliases=[];for(const nick of children(names[0],"NICK")){const v=textOf(nick);if(v)aliases.push(v)}for(const alt of names.slice(1)){const a=nameParts(alt),v=[a.name,a.surname].filter(Boolean).join(" ");if(v&&v!==p.name+" "+(p.surname||""))aliases.push(v)}if(aliases.length)p.aliases=[...new Set(aliases)].slice(0,30);

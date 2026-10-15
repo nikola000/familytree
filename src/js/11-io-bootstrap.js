@@ -16,6 +16,15 @@ function expI(){
  img.onerror=()=>msg("Izvoz slike nije uspeo");
  img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(r.s)}
 let importMode="replace";
+function importDiagnostic(level,event,details,error){
+ const fn=console&&typeof console[level]==="function"?console[level]:console.log;
+ fn.call(console,"[Rodoslov import] "+event,details,error||"")
+}
+function importFailureDialog(file,phase,error){
+ const message=error&&error.message?error.message:String(error||"Nepoznata greška"),details={phase,file:file&&file.name||"",bytes:file&&file.size||0,type:file&&file.type||"",message};
+ importDiagnostic("error","Uvoz nije uspeo",details,error);
+ openModal("Uvoz nije uspeo",`<p>Postojeći podaci nisu promenjeni.</p><p><b>${esc(message)}</b></p><details><summary>Tehnički detalji</summary><pre style="white-space:pre-wrap;font-size:11px">${esc(JSON.stringify(details,null,2))}</pre></details><p style="font-size:12px;margin-bottom:0">Isti detalji i trag greške upisani su u konzolu browsera pod oznakom <code>[Rodoslov import]</code>.</p>`,()=>{},"Zatvori")
+}
 const ONBOARDING_PENDING_KEY="rodoslov:onboarding-pending";
 let onboardingImport=false;
 function finishOnboarding(){localStorage.removeItem(ONBOARDING_PENDING_KEY);$("onboarding").hidden=true}
@@ -28,14 +37,17 @@ function showOnboarding(){
   ps=[];U=[];uid=0;title=treeName||"Moje porodično stablo";const p=mkp(name);p.sn=$("onboard-last-name").value.trim();p.x=$("onboard-sex").value;invalidateIndex();sel=p.id;focus=null;$("vw").value="all";$("title").value=title;save();finishOnboarding();render();msg("Stablo je napravljeno")};
 }
 $("dimp").onclick=()=>openModal("Uvezi JSON / GEDCOM",`<label>Način uvoza<select id="imode"><option value="new">Uvezi kao novo stablo u biblioteci</option><option value="replace">Zameni trenutno stablo</option></select></label><p style="font-size:12px;margin:0">JSON je potpuna rezervna kopija. GEDCOM prenosi podržane osobe i veze; izvori, mediji i dodatni događaji biće preskočeni. Pre zamene se čuva prethodna verzija.</p>`,()=>{importMode=$("imode").value;$("file").click()},"Izaberi fajl");$("dj").onclick=expJ;$("dg").onclick=expG;$("di").onclick=expI;$("dc").onclick=expC;
-$("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader(),before=snap();let pushed=false;
- rd.onload=()=>{try{const isGed=/\.(ged|gedcom)$/i.test(f.name)||/^\uFEFF?0\s+(?:@[^@]+@\s+)?(?:HEAD|INDI)\b/m.test(rd.result),fallback=f.name.replace(/\.(json|ged|gedcom)$/i,"")||"Uvezeno stablo";let data,report=null;
-   if(isGed){const imported=Gedcom.importGedcom(rd.result,fallback);data=imported.data;report=imported.report}else{const raw=JSON.parse(rd.result);if(!Array.isArray(raw.persons))throw new Error("JSON ne sadrži listu osoba");const n=FamilyData.normalize(raw),name=n.title||fallback;data=FamilyData.serialize({title:name,persons:n.persons,unions:n.unions})}
-   const n=FamilyData.normalize(data),name=n.title||fallback;data=FamilyData.serialize({title:name,persons:n.persons,unions:n.unions});
+$("file").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader(),before=snap();let pushed=false,phase="čitanje fajla";
+ importDiagnostic("info","Početak uvoza",{file:f.name,bytes:f.size,type:f.type||"",mode:importMode});
+ rd.onload=()=>{try{phase="prepoznavanje formata";const isGed=/\.(ged|gedcom)$/i.test(f.name)||/^\uFEFF?0\s+(?:@[^@]+@\s+)?(?:HEAD|INDI)\b/m.test(rd.result),format=isGed?"GEDCOM":"JSON",fallback=f.name.replace(/\.(json|ged|gedcom)$/i,"")||"Uvezeno stablo";let data,report=null;
+   phase=isGed?"GEDCOM parsiranje":"JSON parsiranje";if(isGed){const imported=Gedcom.importGedcom(rd.result,fallback);data=imported.data;report=imported.report}else{const raw=JSON.parse(rd.result);if(!Array.isArray(raw.persons))throw new Error("JSON ne sadrži listu osoba");const n=FamilyData.normalize(raw),name=n.title||fallback;data=FamilyData.serialize({title:name,persons:n.persons,unions:n.unions})}
+   phase="normalizacija podataka";const n=FamilyData.normalize(data),name=n.title||fallback;data=FamilyData.serialize({title:name,persons:n.persons,unions:n.unions});
+   importDiagnostic("info","Fajl je pročitan",{file:f.name,bytes:f.size,format,persons:data.persons.length,unions:data.unions.length,report});
    const summary=report?`GEDCOM uvezen: ${report.persons} osoba, ${report.families} porodica${report.ignored.length?"; preskočene oznake: "+report.ignored.slice(0,6).join(", ")+(report.ignored.length>6?"…":""):""}`:"JSON je uvezen";
-   if(importMode==="new"&&!EMB){createLocalTree(data,name);if(onboardingImport)finishOnboarding();msg(summary+" — napravljeno je novo stablo");return}
-   recordVersion(true,"Pre uvoza koji menja stablo");push();pushed=true;load(JSON.stringify(data));focus=null;$("vw").value="all";$("title").value=title;save();openDrawer(false);if(onboardingImport)finishOnboarding();render();msg(summary)
-  }catch(x){if(pushed)stack.pop();try{load(before)}catch(_){}render();msg((x&&x.message?x.message:"Neispravan fajl")+" — postojeći podaci nisu promenjeni")}finally{onboardingImport=false}};rd.readAsText(f,"UTF-8");e.target.value=""};
+   phase="čuvanje novog stabla";if(importMode==="new"&&!EMB){createLocalTree(data,name);if(onboardingImport)finishOnboarding();msg(summary+" — napravljeno je novo stablo");return}
+   phase="zamena trenutnog stabla";recordVersion(true,"Pre uvoza koji menja stablo");push();pushed=true;load(JSON.stringify(data));focus=null;$("vw").value="all";$("title").value=title;save();openDrawer(false);if(onboardingImport)finishOnboarding();phase="iscrtavanje stabla";render();msg(summary)
+  }catch(x){if(pushed)stack.pop();try{load(before);render()}catch(rollbackError){importDiagnostic("error","Vraćanje prethodnog stanja nije uspelo",{phase},rollbackError)}importFailureDialog(f,phase,x)}finally{onboardingImport=false}};
+ rd.onerror=()=>{importFailureDialog(f,"čitanje fajla",rd.error||new Error("Browser nije mogao da pročita fajl"));onboardingImport=false};rd.onabort=()=>{importDiagnostic("warn","Čitanje fajla je prekinuto",{file:f.name,bytes:f.size});onboardingImport=false};rd.readAsText(f,"UTF-8");e.target.value=""};
 
 let needsOnboarding=false;
 try{needsOnboarding=!EMB&&(!readTreeRegistry().length&&!localStorage.getItem(SKEY)||localStorage.getItem(ONBOARDING_PENDING_KEY)==="1");if(needsOnboarding)localStorage.setItem(ONBOARDING_PENDING_KEY,"1");initTreeLibrary();const s=localStorage.getItem(activeDataKey());if(s)load(s);else if(EMB)load(JSON.stringify(EMB.data));else seed()}catch(e){try{if(EMB)load(JSON.stringify(EMB.data));else seed()}catch(_){seed()}}
